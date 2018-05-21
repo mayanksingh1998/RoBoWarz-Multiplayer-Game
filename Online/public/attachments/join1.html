@@ -1,0 +1,939 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-database.js"></script>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyATa6EO1PVnFD5lt0F7JejqcHQx59qSyE8",
+    authDomain: "my-game-dcf3d.firebaseapp.com",
+    databaseURL: "https://my-game-dcf3d.firebaseio.com",
+    projectId: "my-game-dcf3d",
+    storageBucket: "my-game-dcf3d.appspot.com",
+    messagingSenderId: "845490545439"
+  };
+  firebase.initializeApp(config);
+</script>
+   <script src="lib/easel.js"></script>
+   <script src="lib/ndgmr.Collision.js"></script>
+   <script src="lib/soundjs.js"></script>
+   <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+   <script type="text/javascript" src="lib/tweenjs-NEXT.js"></script>
+    <link rel="stylesheet" type="text/css" href="style1.css">
+   </head>
+  <body onload="init();">
+  
+    <canvas id="canvas" width="1600" height="900"></canvas>
+	 <div> 
+  <input id="angle" type="number" name="" value="60">
+  
+ <input id = "power" type="number" name="" value="60">
+    
+</div>
+<button onclick="window.location.href='join1.html'" ="">Join</button>
+
+
+  </body>
+    <script>
+    	var xPoints=[],yPoints=[];
+	var exp_spr;
+	var collide1=0;
+	var collide2=0;
+	var robo_spr,robo_spr2,car;
+  var expl_spr,bombtj;
+
+
+  var roboPos2=[];
+	var b1_spr;
+	var stage;
+	var Robo;
+	var rect1;
+	var robt;
+	var finput1=[];
+	var input2 = [];
+	var turn=0;
+	var vel1;
+	var ang1;
+	var vel;
+	var ang;
+	var phato=0;
+	var KEYCODE_W = 87,
+		KEYCODE_A = 65,
+		KEYCODE_S = 83,
+		KEYCODE_SPACE = 32,
+    KEYCODE_F = 70,
+	 KEYCODE_J = 74,
+		KEYCODE_D = 68;
+function init() {
+
+	 stage = new createjs.Stage("canvas");
+stage.enableMouseOver(10);
+	 B_2= new Image();
+	B_2.src = "Game/Buildings/2nd.png"
+	B_3= new Image();
+	B_3.src = "Game/Buildings/3rd.png"
+	B_4= new Image();
+	B_4.src = "Game/Buildings/4th.png"
+	B_5= new Image();
+	B_5.src = "Game/Buildings/5th.png"
+	B_6= new Image();
+	B_6.src = "Game/Buildings/6th.png"
+	B_7= new Image();
+	B_7.src = "Game/Buildings/7th.png"
+	B_8= new Image();
+	B_8.src = "Game/Buildings/8th.png"
+	B_9= new Image();
+	B_9.src = "Game/Buildings/9th.png"
+	B_10= new Image();
+	B_10.src = "Game/Buildings/10.png"
+	fire= new Image();
+	fire.src = "Game/Buttons/fire.png"
+   Bomb= new Image();
+	Bomb.src = "Game/Tools/Bomb.png";
+		//stage.enableMouseOver(10);
+	Robo= new Image();
+	Robo.src = "Game/Robot/Robo.png";
+	Robo.onload=poop;
+	Robo2= new Image();
+	Robo2.src = "Game/Robot/Robo2.png";
+	exp = new Image();
+	exp.src = "Game/Robot/exp2_0.png"
+	B_1= new Image();
+	B_1.src = "Game/Buildings/1st_B.png"
+  expl= new Image();
+  expl.src = "Game/Buildings/b_exp.png"
+  fire= new Image();
+	fire.src = "Game/Buttons/fire.png"
+		power= new Image();
+	power.src = "Game/Buttons/power.png"
+		angle= new Image();
+	angle.src = "Game/Buttons/angle.png"
+		jump= new Image();
+	jump.src = "Game/Buttons/jump.png"
+		forward= new Image();
+	forward.src = "Game/Buttons/forward.png"
+		back= new Image();
+	back.src = "Game/Buttons/back.png"
+   // createjs.Ticker.setFPS(20); 
+	createjs.Ticker.on("tick", tick);
+	}
+
+function poop(event)
+{
+createjs.MotionGuidePlugin.install();
+car = new createjs.Shape();
+car.graphics.beginFill("blue").drawEllipse(390,390,25,15);
+ var rect = new createjs.Shape();
+rect.graphics.beginFill("DiamondBlack").drawRect(0,0,canvas.width,canvas.height);
+	 rect3 = new createjs.Shape();
+	 rect3.graphics.beginFill("Gray").drawRect(0,800,canvas.width,canvas.height);
+	 rect1 = new createjs.Shape();
+rect1.graphics.beginFill("Red").drawRect(1000,350,10,10);
+	stage.addChild(rect,rect3,rect1,car);
+	//Fire-----------------------------------------------
+	var fireSprite = new createjs.SpriteSheet({
+													   images: [fire],
+													   frames: {width: 200, height: 100},
+													   animations: { idle: 0, pressed: 1 }
+												   });
+	var bitmapfire = new createjs.Sprite(fireSprite,"idle");
+	bitmapfire.x=500;
+	bitmapfire.y=800;
+	var anime = new createjs.ButtonHelper(bitmapfire,"idle","idle","pressed");
+	bitmapfire.addEventListener("click",clickf);
+	//Power-----------------------------------------------
+	var powerSprite = new createjs.SpriteSheet({
+													   images: [power],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 0 }
+												   });
+	var bitmapPower = new createjs.Sprite(powerSprite,"idle");
+	bitmapPower.x=220;
+	bitmapPower.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapPower,"idle","hover","pressed");
+	//Angle------------------------------------------------
+	var AngleSprite = new createjs.SpriteSheet({
+													   images: [angle],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 0 }
+												   });
+	var bitmapAngle = new createjs.Sprite(AngleSprite,"idle");
+	bitmapAngle.x=0;
+	bitmapAngle.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapAngle,"idle","hover","pressed");
+	//Power-------------------------------------------------
+	var JumpSprite = new createjs.SpriteSheet({
+													   images: [jump],
+													   frames: {width: 154, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapJump = new createjs.Sprite(JumpSprite,"idle");
+	bitmapJump.x=750;
+	bitmapJump.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapJump,"idle","hover","pressed");
+	bitmapJump.addEventListener("click",clickj);
+	var ForwardSprite = new createjs.SpriteSheet({
+													   images: [forward],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapforward = new createjs.Sprite(ForwardSprite,"idle");
+	bitmapforward.x=1050;
+	bitmapforward.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapforward,"idle","hover","pressed");
+	bitmapforward.addEventListener("click",clickfor);
+	var BackSprite = new createjs.SpriteSheet({
+													   images: [back],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapback = new createjs.Sprite(BackSprite,"idle");
+	bitmapback.x=950;
+	bitmapback.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapback,"idle","hover","pressed");
+	bitmapback.addEventListener("click",clickb);
+	//Robot movement-------------------------------------
+	var spriteSheet1 = new createjs.SpriteSheet({
+													   images: [Robo],
+													   frames: {width: 90, height: 83},
+													   animations: { idle: [0,9,"idle",0.5], jump_up: [10,15,"jump_down",0.5], jump_down: [16,18,"jump_down",0.4] ,run: [21,28,"run",0.4] ,shootup: [29,32,false,0.01],shootdown: [33,35,false,1],
+													   back: [10,20,"back",0.3], dead:[36,43,false,0.8]}
+											});
+	var spriteSheetp2 = new createjs.SpriteSheet({
+													   images: [Robo2],
+													   frames: {width: 90, height: 83},
+													   animations: { idle: [34,43,"idle",0.5], jump_up: {frames:[33,32,31,30,29,28],next:"jump_down",speed:0.5}, jump_down:{frames:[27,26,25],next:"jump_down",speed:0.4},run:{frames:[22,21,20,19,18,17,16,15],next:"run",speed:0.4},shootup: [8,11,false,0.2],shootdown: [12,14,false,1],
+													   back: {frames:[33,32,31,30,29,28,27,26,25,24,23],next:"back",speed:0.3}, dead: {frames:[7,6,5,4,3,2,1,0],next:false,speed:0.8}}
+											});
+    //END_________________________________________________________________
+var spriteSheetB = new createjs.SpriteSheet({
+												images: [Bomb],
+												frames: {width: 30,height: 30,},
+												animations: {burn:[0,1,"burn",0.2], explode:[2,11,false,1]}
+
+
+												});
+	var spriteSheet2 = new createjs.SpriteSheet({
+												images: [exp],
+												frames: {width: 64,height: 64,count: 16},
+												animations: {explode:[0,15,false,0.7]}
+
+
+												});
+ var spriteSheetExp = new createjs.SpriteSheet({
+                      												images: [expl],
+                      												frames: {width: 174,height: 130},
+                      												animations: {explode:[0,7,false,0.7]}
+
+
+                      												});
+	var spriteSheet3 = new createjs.SpriteSheet({
+												images: [B_1],
+												frames: [[0,0,155,558,0],[0,558,155,364,0],[0,922,155,245,0],[0,1167,155,176,0],[0,1343,155,123,0],[0,1466,155,64,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+	var spriteSheet4 = new createjs.SpriteSheet({
+												images: [B_2],
+												frames: [[0,0,78,241,0],[0,241,78,200,0],[0,441,78,149,0],[0,590,78,114,0],[0,704,78,93,0],[0,797,78,49,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+
+	var spriteSheet5 = new createjs.SpriteSheet({
+												images: [B_3],
+												frames: [[0,0,103,181,0],[0,181,103,141,0],[0,141,103,107,0],[0,107,103,100,0],[0,100,103,39,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4]
+														}
+
+
+												});
+
+
+
+	var spriteSheet6 = new createjs.SpriteSheet({
+												images: [B_4],
+												frames: [[0,0,112,221,0],[0,221,112,190,0],[0,190,112,144,0],[0,144,112,132,0],[0,132,112,93,0],[0,93,112,56,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet7 = new createjs.SpriteSheet({
+												images: [B_5],
+												frames: [[0,0,78,170,0],[0,170,78,164,0],[0,164,78,131,0],[0,131,78,89,0],[0,89,78,67,0],[0,67,78,33,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet8 = new createjs.SpriteSheet({
+												images: [B_6],
+												frames: [[0,0,53,204,0],[0,204,53,161,0],[0,161,53,154,0],[0,154,53,88,0],[0,88,53,112,0],[0,112,53,57,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet9 = new createjs.SpriteSheet({
+												images: [B_7],
+												frames: [[0,0,106,227,0],[0,227,106,227,0],[0,227,106,172,0],[0,172,106,133,0],[0,133,106,126,0],[0,126,106,75,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet10 = new createjs.SpriteSheet({
+												images: [B_8],
+												frames: [[0,0,112,249,0],[0,249,112,233,0],[0,233,112,197,0],[0,197,112,155,0],[0,155,112,122,0],[0,122,112,82,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet11 = new createjs.SpriteSheet({
+												images: [B_9],
+												frames: [[0,0,100,213,0],[0,213,100,183,0],[0,183,100,155,0],[0,155,100,114,0],[0,114,100,83,0],[0,83,100,37,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+exp_bomb = new createjs.Sprite(spriteSheetB,"burn");
+	exp_spr = new createjs.Sprite(spriteSheet2,"explode");
+	robo_spr = new createjs.Sprite(spriteSheet1,"idle");
+	robo_spr2 = new createjs.Sprite(spriteSheetp2,"idle");
+ expl_spr = new createjs.Sprite(spriteSheetExp,"explode");
+	b1_spr = new createjs.Sprite(spriteSheet3,"break1");
+		var b2_spr = new createjs.Sprite(spriteSheet4,"break1");
+	var b3_spr = new createjs.Sprite(spriteSheet5,"break1");
+	var b4_spr = new createjs.Sprite(spriteSheet6,"break1");
+	var b5_spr = new createjs.Sprite(spriteSheet7,"break1");
+	var b6_spr = new createjs.Sprite(spriteSheet8,"break1");
+	var b7_spr = new createjs.Sprite(spriteSheet9,"break1");
+	var b8_spr = new createjs.Sprite(spriteSheet10,"break1");
+	var b9_spr = new createjs.Sprite(spriteSheet11,"break1");
+	
+	// robo_spr.x=200;
+	// // robo_spr.y=600;
+	// robo_spr2.x=1200;
+	// robo_spr2.y=600;
+	robo_spr2.x=Math.floor((Math.random() * 1000) + 1);
+	robo_spr2.y=500;
+	roboPos2[0] = robo_spr2.x;
+	roboPos2[1] = robo_spr2.y;
+	robo_spr.sourcer=new createjs.Rectangle(robo_spr.x,robo_spr.y,90,83);
+	b1_spr.x=800;
+	b1_spr.y=225;
+	b2_spr.y=520;
+   b3_spr.y=590;
+    b4_spr.y=550;
+      b5_spr.y=600;
+      b6_spr.y=560;
+	  	b7_spr.y=550;
+	b8_spr.y=530;
+	b9_spr.y=570;
+
+  firebase.database().ref("roboPos").on('value', function(data) {
+ 
+var robox = [];
+robox=data.val();
+robo_spr.x=robox[0];
+robo_spr.y=robox[1];
+
+});
+  firebase.database().ref("roboPos2").on('value', function(data) {
+ 
+var robox = [];
+robox=data.val();
+robo_spr2.x=robox[0];
+robo_spr2.y=robox[1];
+
+});
+
+ //array which goes to datbase   
+ firebase.database().ref("xPoints").on('value', function(data) {
+  	var xData = [];
+
+ 	xData=data.val();
+
+//  // window.alert(xData);
+b1_spr.x=xData[0];
+b2_spr.x=xData[1];
+b3_spr.x=xData[2];
+b4_spr.x=xData[3];
+b5_spr.x=xData[4];
+b6_spr.x=xData[5];
+b7_spr.x=xData[6];
+b9_spr.x=xData[8];
+b8_spr.x=xData[7];
+
+  
+});
+
+
+yPoints[0]=b1_spr.y;
+yPoints[1]=b2_spr.y;
+yPoints[2]=b3_spr.y;
+yPoints[3]=b4_spr.y;
+yPoints[4]=b5_spr.y;
+yPoints[5]=b6_spr.y;
+yPoints[6]=b7_spr.y;
+ yPoints[7]=b8_spr.y;
+yPoints[8]=b9_spr.y;
+
+//------------------------------------------------------
+//...................................................Firebade Database Sending..........................
+
+
+
+//firebase.database().ref("roboPos2").set(roboPos2);
+
+
+
+
+//-------------------------------------------------------------
+
+	//stage.addChild(exp_bomb);
+	//robo_spr.gotoAndPlay("idle");
+	//createjs.Ticker.setFPS(60);
+	stage.addChild(b1_spr,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b7_spr,b8_spr,b9_spr,robo_spr,robo_spr2,bitmapfire,bitmapAngle,bitmapJump,bitmapPower,bitmapback,bitmapforward);
+	//,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b7_spr,b8_spr,b9_spr);
+	//stage.addChild(b1_spr,robo_spr);
+var intersection = ndgmr.checkRectCollision(robo_spr,b1_spr);
+createjs.Ticker.addEventListener("tick", stage);
+	//createjs.Ticker.addEventListener("tick", tick);
+var num=1;
+	//document.onkeydown = keydownPressed.bind(this);
+	//document.onkeyup = keyupPressed.bind(this);
+	function keydownPressed(event) {
+	var mn = event.keyCode;
+		switch(mn) {
+		case KEYCODE_J:
+			//exp_bomb.x=robo_spr.x+55;
+			//exp_bomb.y=robo_spr.y+20;
+			//stage.addChild(exp_bomb);
+			//console.log(robo_spr.x+vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr.y-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), robo_spr.x+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5,robo_spr.y)
+			
+			createjs.Tween.get(exp_bomb,{bounce: true})
+			.call(function(){
+			exp_bomb.x=robo_spr.x+55;
+			exp_bomb.y=robo_spr.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, robo_spr.x+55+vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5,robo_spr.y+20]}}, 2000)
+			.call(function(){
+			exp_bomb.gotoAndPlay("explode");});
+			//.to({x:650,y:450},8000,createjs.Ease.circOut);
+			break;
+//<-----------------------------------------
+		case KEYCODE_SPACE:
+
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr.x, y: robo_spr.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+		case KEYCODE_A:
+			robt = createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("back"); })
+			.to({x: robo_spr.x-150, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+		case KEYCODE_S:
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootup"); })
+			.to({x: robo_spr.x, y: robo_spr.y},4000);
+			bombtj=createjs.Tween.get(exp_bomb,{bounce: true})
+			.wait(100)
+			.call(function(){
+			exp_bomb.x=robo_spr.x+55;
+			exp_bomb.y=robo_spr.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, robo_spr.x+55+vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5,robo_spr.y+20]}}, 3000)
+			//.call(function(){while})
+			.call(function(){if(phato==0)
+			exp_bomb.gotoAndPlay("explode");
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+		case KEYCODE_D:
+			if(collide!=1)
+			{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("run"); })
+			.to({x: robo_spr.x+150, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });}
+			else
+			robo_spr.gotoAndPlay("idle");
+				break;
+		case KEYCODE_W:
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {
+			exp_spr.x=robo_spr.x+5;
+			exp_spr.y=robo_spr.y;
+			stage.addChild(exp_spr);
+			exp_spr.gotoAndPlay("explode");})
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("dead"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle");
+			stage.removeChild(exp_spr); });
+				break;
+        case KEYCODE_F:
+
+        createjs.Tween.get(b1_spr, { bounce: true}, true)
+  			.wait(100)
+      .call(function() {  if(num!=1&&num<7)
+        {expl_spr.x=b1_spr.x+5;
+        expl_spr.y=b1_spr.y;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}})
+        .wait(300)
+  			.call(function() {
+
+          if(num==2)
+          b1_spr.y +=194;
+          else if(num==3)
+          b1_spr.y +=119;
+          else if(num==4)
+          b1_spr.y +=69;
+          else if(num==5)
+          b1_spr.y +=53;
+          else if(num==6)
+          {b1_spr.y +=59;}
+            if(num>6)
+          {num=1;
+          b1_spr.y -=494;
+          stage.removeChild(expl_spr);
+          }
+          b1_spr.gotoAndStop("break"+num.toString());
+        num++;})
+        break;
+		
+		//robo_spr.gotoAndPlay("idle");
+		stage.update();
+	}
+	}
+}
+var doo=0;
+function projectile()
+{			exp_bomb.x=robo_spr.x+20;
+			exp_bomb.y=robo_spr.y-20;
+			stage.addChild(exp_bomb);
+		createjs.Tween.get(exp_bomb,{bounce: true})
+			.call(function(){exp_bomb.x=robo_spr.x+20;
+			exp_bomb.y=robo_spr.y-20;
+			//stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr.x+20,robo_spr.y-20, robo_spr.x+20+vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr.y-20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), robo_spr.x+20+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5,robo_spr.y-20]}}, 8000)
+			.call(function(){
+			exp_bomb.gotoAndPlay("explode");});
+}
+var num1=1,hi = true;
+var vi;
+	var ani;
+var ang2, pow2;	
+var input2 = [];	
+function tick()
+{	pow2=document.getElementById("power").value;
+	ang2=document.getElementById("angle").value;
+	input2[0]=Number(pow2);
+	input2[1]=Number(ang2);
+	firebase.database().ref("input2").set(input2);
+
+	if(hi)
+	checkni();
+//console.log(vi+ani);
+//robo_spr2.gotoAndPlay("idle");
+rect1.alpha=0.4;
+var tampx=robo_spr.x;
+var tampy=robo_spr.y;
+var intersection = ndgmr.checkRectCollision(robo_spr,b1_spr);
+var intersection1 = ndgmr.checkRectCollision(robo_spr2,b1_spr);
+var procoll = ndgmr.checkRectCollision(exp_bomb,b1_spr);
+if (intersection1)
+{collide2=1;}
+if (procoll)
+{
+bombtj.setPaused(true);
+if(num1!=1&&num1<7)
+        {expl_spr.x=b1_spr.x+5;
+        expl_spr.y=b1_spr.y+50;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+          if(num1==2)
+          b1_spr.y +=194;
+          else if(num1==3)
+          b1_spr.y +=119;
+          else if(num1==4)
+          b1_spr.y +=69;
+          else if(num1==5)
+          b1_spr.y +=53;
+          else if(num1==6)
+          {b1_spr.y +=59;}
+           /* if(num1>6)
+          {num1=1;
+          b1_spr.y -=494;
+          stage.removeChild(expl_spr);
+          }*/
+          b1_spr.gotoAndStop("break"+num1.toString());
+        num1++;
+		phato=1;
+	rect1.alpha = 1;
+		/*expl_spr.x=b1_spr.x+5;
+        expl_spr.y=b1_spr.y;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");*/
+//createjs.Tween.removeTweens(bombtj);
+//bombtj.to({x:exp_bomb.x-100,y:exp_bomb.y});
+exp_bomb.gotoAndPlay("explode");
+bombtj.setPaused(false);
+}
+if (intersection) { rect1.alpha = 1;
+	//robo_spr.x=tampx-20;robo_spr.y=tampy;
+	//createjs.Tween.removeTweens(robo_spr);
+	//robt.setPaused(true);
+	collide=1;
+	robo_spr.gotoAndPlay("idle");
+	//robt.setPaused(false);
+	//createjs.Tween.get(robo_spr, { bounce: true}, true);
+	}
+	else
+	collide=0;
+	//poop();
+					//robo_spr.gotoAndPlay("idle");
+			
+			//createjs.Tween.addTween(robo_spr);
+			stage.update();
+}
+
+function checkni(){
+
+	hi = true;
+	firebase.database().ref("animae").on('value', function(data) {
+ 
+				var r = data.val();
+				if(r==1){
+					clkfor();
+				}
+
+				});
+	firebase.database().ref("backan").on('value', function(data) {
+ 
+				var lop = data.val();
+				if(lop==1){
+					clkbck();
+				}
+
+				});
+	firebase.database().ref("fire1").on('value', function(data) {
+ 
+				var qa = data.val();
+				if(qa==1){
+					//console.log(6);
+				fired();
+				}
+
+				});
+
+}
+function clkfor()
+{			
+			//if(turn==0)
+			{if(collide1!=1)
+			{
+				//console.log(1);
+				createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("run");//console.log(2);
+			 })
+			.to({x: robo_spr.x+50, y: robo_spr.y}, 1000)
+			.call(function() {
+			//	console.log(3); 
+				firebase.database().ref("animae").set(0);
+				robo_spr.gotoAndPlay("idle");
+					//f=true;
+		});
+
+		}
+			else
+			robo_spr.gotoAndPlay("idle");
+			}
+		
+
+		}
+function clkbck()
+{			
+			//if(turn==0)
+			{if(collide1!=1)
+			{
+				console.log(1);
+				createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("back");console.log(2); })
+			.to({x: robo_spr.x-50, y: robo_spr.y}, 1000)
+			.call(function() {
+				console.log(3); 
+				firebase.database().ref("backan").set(0);
+				robo_spr.gotoAndPlay("idle");
+				//	turn=1;
+		});
+
+		}
+			else
+			robo_spr.gotoAndPlay("idle");
+			}
+		}		
+
+function clickf(){
+
+ {
+createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootup"); })
+			.to({x: robo_spr2.x, y: robo_spr2.y},2000);
+			bombtj=createjs.Tween.get(exp_bomb,{bounce: true})
+			.wait(100)
+			.call(function(){
+			exp_bomb.x=robo_spr2.x-55;
+			exp_bomb.y=robo_spr2.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr2.x-55,robo_spr2.y+20, robo_spr2.x-55-pow2*ang2*Math.sin(2*ang2*Math.PI/180)/(2*4.5),robo_spr2.y+20-pow2*pow2*Math.sin(ang2*Math.PI/180)*Math.sin(ang2*Math.PI/180)/(2*4.5), robo_spr2.x-55-pow2*pow2* Math.sin(2*ang2*Math.PI/180)/4.5,robo_spr2.y+20]}}, 3000)
+			//.call(function(){while})
+			.call(function(){
+			if(phato==0)
+			exp_bomb.gotoAndPlay("explode");
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+//			turn=0;222222
+firebase.database().ref("fire2").set(1);
+}
+}
+
+function clickfor()
+{
+			//if(turn==0)
+			{if(collide2!=1)
+			{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr2.gotoAndPlay("back"); })
+			.to({x: robo_spr2.x+50, y: robo_spr2.y}, 1000)
+			.call(function() { 
+				robo_spr2.gotoAndPlay("idle");
+
+					roboPos2[0]=robo_spr2.x;
+					roboPos2[1]=robo_spr2.y;
+					
+		firebase.database().ref("animae2").set(1);
+					robo_spr2.gotoAndPlay("idle");
+			//		turn=1;
+		});
+
+		}
+			else
+			robo_spr2.gotoAndPlay("idle");
+			}
+// firebase.database().ref("roboPos").on('value', function(data) {
+ 
+// 				var robox = [];
+// 				robox=data.val();
+// 				robo_spr.x=robox[0];
+// 				robo_spr.y=robox[1];
+
+
+// 				});	
+// 				robo_spr2.gotoAndPlay("idle");
+
+		}
+function clickb()
+{
+	console.log("back h",collide2);
+			//if(turn==0)
+			{if(collide2!=1)
+			{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr2.gotoAndPlay("run"); })
+			.to({x: robo_spr2.x-50, y: robo_spr2.y}, 1000)
+			.call(function() { 
+				robo_spr2.gotoAndPlay("idle");
+				console.log("cha")
+					roboPos2[0]=robo_spr2.x;
+					roboPos2[1]=robo_spr2.y;
+					
+		firebase.database().ref("backan2").set(1);
+					robo_spr2.gotoAndPlay("idle");
+			//		turn=1;
+		});
+
+		}
+			else
+			robo_spr2.gotoAndPlay("idle");
+			}
+// firebase.database().ref("roboPos").on('value', function(data) {
+ 
+// 				var robox = [];
+// 				robox=data.val();
+// 				robo_spr.x=robox[0];
+// 				robo_spr.y=robox[1];
+
+
+// 				});	
+// 				robo_spr2.gotoAndPlay("idle");
+
+		}
+function clickj()
+{if(turn==0)
+	{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr.x, y: robo_spr.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+			turn=1;
+	}
+else if(turn==1)
+	{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr2.x, y: robo_spr2.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr2.x, y: robo_spr2.y}, 1000)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+			turn=0;
+	}
+			}
+
+
+function fired()
+
+
+{
+
+	console.log("ghus vgya");
+
+			firebase.database().ref("input1").on('value', function(data) {
+ 				var fireIn1=[];
+				 fireIn1 = data.val();
+				 vi = fireIn1[0];
+				 ani = fireIn1[1];
+//console.log(vel1 + " " + ang1);	
+			//	console.log(vel1 + " " + ang1);	
+		
+});
+
+			
+//if(turn==0)
+
+	//  vi =  Number(vel1);
+	//  ani =  Number(ang1);
+	// console.log(vi + ani);
+		
+
+			//console.log(vi + ani);
+	createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootup"); })
+			.to({x: robo_spr.x, y: robo_spr.y},2000);
+			bombtj=createjs.Tween.get(exp_bomb,{bounce: true})
+			.wait(100)
+			.call(function(){
+			exp_bomb.x=robo_spr.x+55;
+			exp_bomb.y=robo_spr.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, robo_spr.x+55+vi*vi*Math.sin(2*ani*Math.PI/180)/(2*4.5),robo_spr.y+20-vi*vi*Math.sin(ani*Math.PI/180)*Math.sin(ani*Math.PI/180)/(2*4.5), robo_spr.x+55+vi*vi* Math.sin(2*ani*Math.PI/180)/4.5,robo_spr.y+20]}}, 3000)
+			//.call(function(){while})
+			.call(function(){if(phato==0)
+			exp_bomb.gotoAndPlay("explode");
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootdown"); })
+			.wait(100)
+		
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+		firebase.database().ref("fire1").set(0);
+
+		
+	}
+
+    </script>
+
+  
+</html>

@@ -1,0 +1,177 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+   <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+   <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+   <link href="_assets/css/shared.css" rel="stylesheet" type="text/css"/>
+	<link href="_assets/css/examples.css" rel="stylesheet" type="text/css"/>
+   <script src="_assets/js/examples.js"></script>
+    <script>   
+	var stage;
+	var text;
+	var logo;
+	var src;
+	var soundInstance;
+function init() {
+
+	 stage = new createjs.Stage("canvas");
+
+		stage.enableMouseOver(10);
+	logo= new Image();
+	logo.src = "MM/logo.png";
+	create= new Image();
+	create.src = "MM/Create.png";
+	join= new Image();
+	join.src = "MM/Join.png";
+	offline= new Image();
+	offline.src = "MM/offline.png";
+	options= new Image();
+	options.src = "MM/options.png";
+	sr = "sound/f_try.ogg";
+	createjs.Sound.alternateExtensions = ["mp3"];
+	createjs.Sound.addEventListener("fileload", playSound);
+	createjs.Sound.registerSound(sr);
+	srd = "sound/click.ogg";
+	//createjs.Sound.alternateExtensions = ["mp3"];
+	createjs.Sound.registerSound(srd);
+	srdd = "sound/select.ogg";
+	//createjs.Sound.alternateExtensions = ["mp3"];
+	createjs.Sound.registerSound(srdd);
+	exit= new Image();
+	exit.src = "MM/Exit.png";
+	exit.onload=poop;
+	
+	 
+	}
+function playSound(event) {
+		soundInstance = createjs.Sound.play(event.src); 
+	}
+function poop(event)
+{
+ var rect = new createjs.Shape();
+rect.graphics.beginFill("DiamondBlack").drawRect(0,0,canvas.width,canvas.height);
+	stage.addChild(rect);
+	//Logo-------------------------------------
+	var spriteSheet1 = new createjs.SpriteSheet({
+													   images: [logo],
+													   frames: {width: 539, height: 150},
+													   animations: { on: [0,0,"off",0.3], off: [1,1,"on",0.3] }
+												   });
+	var bitmaplogo = new createjs.Sprite(spriteSheet1,"on");
+	bitmaplogo.x=500;
+	bitmaplogo.gotoAndPlay("on");
+	//create-----------------------------------
+	var spriteSheet3 = new createjs.SpriteSheet({
+													   images: [create],
+													   frames: {width: 228, height: 59},
+													   animations: { idle: 0, hover: 1, pressed: 2 }
+												   });
+	var bitmapcreate = new createjs.Sprite(spriteSheet3,"idle");
+	bitmapcreate.x=650;
+	bitmapcreate.y=350;
+	var anime3 = new createjs.ButtonHelper(bitmapcreate,"idle","hover","pressed");
+	bitmapcreate.addEventListener("mouseover",click);
+	bitmapcreate.addEventListener("click",click2);
+	//offline-----------------------------------
+		var spriteSheet4 = new createjs.SpriteSheet({
+													   images: [offline],
+													   frames: {width: 325, height: 54},
+													   animations: { idle: 0, hover: 1, pressed: 2 }
+												   });
+	var bitmapoffline = new createjs.Sprite(spriteSheet4,"idle");
+	bitmapoffline.x=599;
+	bitmapoffline.y=440;
+	var anime4 = new createjs.ButtonHelper(bitmapoffline,"idle","hover","pressed");
+	bitmapoffline.addEventListener("mouseover",click);
+	bitmapoffline.addEventListener("click",click5);
+	//options-----------------------------------
+	var spriteSheet5 = new createjs.SpriteSheet({
+													   images: [options],
+													   frames: {width: 131, height: 44},
+													   animations: { idle: 0, hover: 1, pressed: 2 }
+												   });
+	var bitmapop = new createjs.Sprite(spriteSheet5,"idle");
+	bitmapop.x=690;
+	bitmapop.y=480;
+	var anime5 = new createjs.ButtonHelper(bitmapop,"idle","hover","pressed");
+	bitmapop.addEventListener("mouseover",click);
+	bitmapop.addEventListener("click",click2);
+	//exit-------------------------------------
+	var spriteSheet = new createjs.SpriteSheet({
+													   images: [exit],
+													   frames: {width: 129, height: 60},
+													   animations: { idle: 0, hover: 1, pressed: 2 }
+												   });
+	var bitmapButton = new createjs.Sprite(spriteSheet,"idle");
+	bitmapButton.x=690;
+	bitmapButton.y=520;
+	var anime = new createjs.ButtonHelper(bitmapButton,"idle","hover","pressed");
+	bitmapButton.addEventListener("mouseover",click);
+	bitmapButton.addEventListener("click",clickexit);
+	//join--------------------------------------
+	var spriteSheet2 = new createjs.SpriteSheet({
+													   images: [join],
+													   frames: {width: 194, height: 62},
+													   animations: { idle: 0, hover: 1, pressed: 2 }
+												   });
+	var bitmapjoin = new createjs.Sprite(spriteSheet2,"idle");
+	bitmapjoin.x=663;
+	bitmapjoin.y=390;
+	var anime1 = new createjs.ButtonHelper(bitmapjoin,"idle","hover","pressed");
+	bitmapjoin.addEventListener("mouseover",click);
+	bitmapjoin.addEventListener("click",click3);
+	//------------------------------------------------
+	stage.addChild(bitmapButton,bitmaplogo,bitmapjoin,bitmapcreate,bitmapoffline,bitmapop);
+	createjs.Ticker.addEventListener("tick", stage);
+	
+	
+}
+function click(event)
+{
+    
+soundInstance2 = createjs.Sound.play(srd); 
+}
+function click2(event)
+{
+	onclick= window.location.href = "final.html";
+soundInstance3 = createjs.Sound.play(srdd); 
+}
+function click3(event)
+{
+	onclick= window.location.href = "joinFinal.html";
+soundInstance3 = createjs.Sound.play(srdd); 
+}
+function click5(event)
+{
+	onclick= window.location.href = "offline.html";
+soundInstance3 = createjs.Sound.play(srdd); 
+}
+function clickexit(event)
+{
+	logout();
+	
+soundInstance3 = createjs.Sound.play(srdd); 
+}
+    </script>
+  
+  </head>
+  <body onload="init();">
+    <canvas id="canvas" width="1600" height="900"></canvas>
+    	<button onclick="logout()">Log out</button>
+    	  <script src="log.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script>
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyATa6EO1PVnFD5lt0F7JejqcHQx59qSyE8",
+    authDomain: "my-game-dcf3d.firebaseapp.com",
+    databaseURL: "https://my-game-dcf3d.firebaseio.com",
+    projectId: "my-game-dcf3d",
+    storageBucket: "",
+    messagingSenderId: "845490545439"
+  };
+  firebase.initializeApp(config);
+</script>
+  </body>
+</html>

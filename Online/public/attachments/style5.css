@@ -1,0 +1,15 @@
+#angle,#power{
+	padding: 20px;
+	margin: 20px;	
+}
+
+#po , #an{
+	padding: 20px;
+	margin: 20px;
+	float: right;		
+}
+/*.plus-minus-input .input-group-button .circle {
+  border-radius: 50%;
+  padding: 0.25em 0.8em;
+}
+*/

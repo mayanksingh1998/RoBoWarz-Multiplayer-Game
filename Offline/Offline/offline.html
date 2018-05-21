@@ -1,0 +1,1608 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+   <script src="lib/easel.js"></script>
+   <script src="lib/ndgmr.Collision.js"></script>
+   <script src="lib/soundjs.js"></script>
+   <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+   <script type="text/javascript" src="lib/tweenjs-NEXT.js"></script>
+   </head>
+  <body onload="init();">
+  
+    <canvas id="canvas" width="1600" height="900"></canvas>
+	 <div> 
+  <input id="angle" type="number" name="" value="60">
+  
+ <input id = "power" type="number" name="" value="60">
+    
+</div>
+  </body>
+    <script>
+	var exp_spr,collide1,collide2;
+	var robo_spr,robo_spr2,car;
+  var expl_spr,bombtj;
+	var b1_spr,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b7_spr,b8_spr,b9_spr;
+	var stage;
+	var Robo,bitmapacid,bitmapgas,bitmapNE,bitmapnuke;
+	var rect1;
+	var robt;
+	var r1b=[];
+	var r2b=[];
+	var turn=0;
+	var vel;
+	var armour1=40;
+	var armour2=40;
+	var health1=100;
+	var health2=100;
+	var ar1,ar2,ht1,ht2,healthb1,healthb2,armourb1,armourb2;
+	var ang;
+	var phato=0;
+	var KEYCODE_W = 87,
+		KEYCODE_A = 65,
+		KEYCODE_S = 83,
+		KEYCODE_SPACE = 32,
+    KEYCODE_F = 70,
+	 KEYCODE_J = 74,
+		KEYCODE_D = 68;
+function init() {
+
+	 stage = new createjs.Stage("canvas");
+stage.enableMouseOver(10);
+	 B_2= new Image();
+	B_2.src = "Game/Buildings/B_2.png"
+	B_3= new Image();
+	B_3.src = "Game/Buildings/B_3.png"
+	B_4= new Image();
+	B_4.src = "Game/Buildings/B_4.png"
+	B_5= new Image();
+	B_5.src = "Game/Buildings/5th.png"
+	B_6= new Image();
+	B_6.src = "Game/Buildings/6th.png"
+	B_7= new Image();
+	B_7.src = "Game/Buildings/B_7.png"
+	B_8= new Image();
+	B_8.src = "Game/Buildings/8th.png"
+	B_9= new Image();
+	B_9.src = "Game/Buildings/B_9.png"
+	fire= new Image();
+	fire.src = "Game/Buttons/fire.png"
+	BNUKE= new Image();
+	BNUKE.src = "Game/Buttons/NUKE.png"
+	BACID= new Image();
+	BACID.src = "Game/Buttons/ACID.png"
+   Bomb= new Image();
+	Bomb.src = "Game/Tools/Bomb.png";
+	Acid= new Image();
+	Acid.src = "Game/Tools/acid.png";
+	Nuke= new Image();
+	Nuke.src = "Game/Tools/nuke.png";
+	Gas= new Image();
+	Gas.src = "Game/Tools/gas.png";
+		NE= new Image();
+	NE.src = "Game/Tools/explosion.png";
+		//stage.enableMouseOver(10);
+	Robo= new Image();
+	Robo.src = "Game/Robot/Robo.png";
+	Robo.onload=load;
+	Robo2= new Image();
+	Robo2.src = "Game/Robot/Robo2.png";
+	exp = new Image();
+	exp.src = "Game/Robot/exp2_0.png"
+	B_1= new Image();
+	B_1.src = "Game/Buildings/1st_B.png"
+  expl= new Image();
+  expl.src = "Game/Buildings/b_exp.png"
+  fire= new Image();
+	fire.src = "Game/Buttons/fire.png"
+		power= new Image();
+	power.src = "Game/Buttons/power.png"
+		angle= new Image();
+	angle.src = "Game/Buttons/angle.png"
+		jump= new Image();
+	jump.src = "Game/Buttons/jump.png"
+		forward= new Image();
+	forward.src = "Game/Buttons/forward.png"
+		back= new Image();
+	back.src = "Game/Buttons/back.png"
+	
+   // createjs.Ticker.setFPS(20); 
+	createjs.Ticker.on("tick", tick);
+	}
+
+function load(event)
+{
+createjs.MotionGuidePlugin.install();
+car = new createjs.Shape();
+car.graphics.beginFill("blue").drawEllipse(390,390,25,15);
+ var rect = new createjs.Shape();
+rect.graphics.beginFill("DiamondBlack").drawRect(0,0,canvas.width,canvas.height);
+	 rect3 = new createjs.Shape();
+	 rect3.graphics.beginFill("Gray").drawRect(0,800,canvas.width,canvas.height);
+	 rect1 = new createjs.Shape();
+rect1.graphics.beginFill("Red").drawRect(1000,350,10,10);
+	stage.addChild(rect,rect3,rect1,car);
+	//ButtonAcid-----------------------------------------
+	var BacidSprite = new createjs.SpriteSheet({
+													   images: [BACID],
+													   frames: {width: 194, height: 77},
+													   animations: { idle: 0, pressed: 1 }
+												   });
+	var bitmapBacid = new createjs.Sprite(BacidSprite,"idle");
+	bitmapBacid.x=440;
+	bitmapBacid.y=800;
+	var anime88 = new createjs.ButtonHelper(bitmapBacid,"idle","idle","pressed");
+	bitmapBacid.addEventListener("click",clickAc);
+	//ButtonNuke-----------------------------------------
+	var BnukeSprite = new createjs.SpriteSheet({
+													   images: [BNUKE],
+													   frames: {width: 194, height: 81},
+													   animations: { idle: 0, pressed: 1 }
+												   });
+	var bitmapBnuke = new createjs.Sprite(BnukeSprite,"idle");
+	bitmapBnuke.x=880;
+	bitmapBnuke.y=800;
+	var anime89 = new createjs.ButtonHelper(bitmapBnuke,"idle","idle","pressed");
+	bitmapBnuke.addEventListener("click",clickNu);
+	//Gas------------------------------------------------
+		var gasSprite = new createjs.SpriteSheet({
+													   images: [Gas],
+													   frames: {width: 123, height: 73},
+													   animations: { exp:[0,9,false,1] }
+												   });
+	bitmapgas = new createjs.Sprite(gasSprite,"");
+	//Acid-----------------------------------------------
+	var acidSprite = new createjs.SpriteSheet({
+													   images: [Acid],
+													   frames: {width: 47, height: 28},
+													   animations: { fly:0 }
+												   });
+	bitmapacid = new createjs.Sprite(acidSprite);
+	//Nuke-----------------------------------------------
+	var NukeSprite = new createjs.SpriteSheet({
+													   images: [Nuke],
+													   frames: {width: 30, height: 26,count:7},
+													   animations: { ini:[0,2,"fly",0.5], fly: [1,7,"fly",1] }
+												   });
+	createjs.SpriteSheetUtils.addFlippedFrames(NukeSprite, true, false, false);
+	bitmapnuke = new createjs.Sprite(NukeSprite);
+	//NukeExp--------------------------------------------
+	var NESprite = new createjs.SpriteSheet({
+													   images: [NE],
+													   frames: {width: 96, height: 96},
+													   animations: { exp:[0,15,false,0.8] }
+												   });
+	bitmapNE = new createjs.Sprite(NESprite);
+	//Fire-----------------------------------------------
+	var fireSprite = new createjs.SpriteSheet({
+													   images: [fire],
+													   frames: {width: 200, height: 100},
+													   animations: { idle: 0, pressed: 1 }
+												   });
+	var bitmapfire = new createjs.Sprite(fireSprite,"idle");
+	bitmapfire.x=680;
+	bitmapfire.y=800;
+	var anime = new createjs.ButtonHelper(bitmapfire,"idle","idle","pressed");
+	bitmapfire.addEventListener("click",clickf);
+	//Power-----------------------------------------------
+	var powerSprite = new createjs.SpriteSheet({
+													   images: [power],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 0 }
+												   });
+	var bitmapPower = new createjs.Sprite(powerSprite,"idle");
+	bitmapPower.x=200;
+	bitmapPower.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapPower,"idle","hover","pressed");
+	//Angle------------------------------------------------
+	var AngleSprite = new createjs.SpriteSheet({
+													   images: [angle],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 0 }
+												   });
+	var bitmapAngle = new createjs.Sprite(AngleSprite,"idle");
+	bitmapAngle.x=0;
+	bitmapAngle.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapAngle,"idle","hover","pressed");
+	//Power-------------------------------------------------
+	var JumpSprite = new createjs.SpriteSheet({
+													   images: [jump],
+													   frames: {width: 154, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapJump = new createjs.Sprite(JumpSprite,"idle");
+	bitmapJump.x=1100;
+	bitmapJump.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapJump,"idle","hover","pressed");
+	bitmapJump.addEventListener("click",clickj);
+	var ForwardSprite = new createjs.SpriteSheet({
+													   images: [forward],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapforward = new createjs.Sprite(ForwardSprite,"idle");
+	bitmapforward.x=1400;
+	bitmapforward.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapforward,"idle","hover","pressed");
+	bitmapforward.addEventListener("click",clickfor);
+	var BackSprite = new createjs.SpriteSheet({
+													   images: [back],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 0, pressed: 1 }
+												   });
+	var bitmapback = new createjs.Sprite(BackSprite,"idle");
+	bitmapback.x=1300;
+	bitmapback.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapback,"idle","hover","pressed");
+	bitmapback.addEventListener("click",clickb);
+	//Robot movement-------------------------------------
+	var spriteSheet1 = new createjs.SpriteSheet({
+													   images: [Robo],
+													   frames: {width: 90, height: 83},
+													   animations: { idle: [0,9,"idle",0.5], jump_up: [10,15,"jump_down",0.5], jump_down: [16,18,"jump_down",0.4] ,run: [21,28,"run",0.4] ,shootup: [29,32,false,0.01],shootdown: [33,35,false,1],
+													   back: [10,20,"back",0.3], dead:[36,43,false,0.8]}
+											});
+	var spriteSheetp2 = new createjs.SpriteSheet({
+													   images: [Robo2],
+													   frames: {width: 90, height: 83},
+													   animations: { idle: [34,43,"idle",0.5], jump_up: {frames:[33,32,31,30,29,28],next:"jump_down",speed:0.5}, jump_down:{frames:[27,26,25],next:"jump_down",speed:0.4},run:{frames:[22,21,20,19,18,17,16,15],next:"run",speed:0.4},shootup: [8,11,false,0.2],shootdown: [12,14,false,1],
+													   back: {frames:[33,32,31,30,29,28,27,26,25,24,23],next:"back",speed:0.3}, dead: {frames:[7,6,5,4,3,2,1,0],next:false,speed:0.8}}
+											});
+    //END_________________________________________________________________
+var spriteSheetB = new createjs.SpriteSheet({
+												images: [Bomb],
+												frames: {width: 30,height: 30,},
+												animations: {burn:[0,1,"burn",0.2], explode:[2,11,false,1]}
+
+
+												});
+	var spriteSheet2 = new createjs.SpriteSheet({
+												images: [exp],
+												frames: {width: 64,height: 64,count: 16},
+												animations: {explode:[0,15,false,0.7]}
+
+
+												});
+ var spriteSheetExp = new createjs.SpriteSheet({
+                      												images: [expl],
+                      												frames: {width: 174,height: 130},
+                      												animations: {explode:[0,7,false,0.7]}
+
+
+                      												});
+	var spriteSheet3 = new createjs.SpriteSheet({
+												images: [B_1],
+												frames: [[0,0,155,558,0],[0,558,155,364,0],[0,922,155,245,0],[0,1167,155,176,0],[0,1343,155,123,0],[0,1466,155,64,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+	var spriteSheet4 = new createjs.SpriteSheet({
+												images: [B_2],
+												frames: [[0,0,172,480,0],[0,480,172,348,0],[0,828,172,277,0],[0,1105,172,196,0],[0,1301,172,116,0],[0,1417,172,61,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+
+
+	var spriteSheet5 = new createjs.SpriteSheet({
+												images: [B_3],
+												frames: [[0,0,117,231,0],[0,231,117,205,0],[0,436,117,164,0],[0,600,117,131,0],[0,731,117,98,0],[0,829,117,58,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]
+														}
+
+
+												});
+
+
+
+	var spriteSheet6 = new createjs.SpriteSheet({
+												images: [B_4],
+												frames: [[0,0,165,344,0],[0,344,165,281,0],[0,625,165,235,0],[0,860,165,206,0],[0,1066,165,172,0],[0,1238,165,88,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+
+var spriteSheet7 = new createjs.SpriteSheet({
+												images: [B_5],
+												frames: [[0,0,112,221,0],[0,221,112,190,0],[0,411,112,144,0],[0,555,112,132,0],[0,687,112,93,0],[0,780,112,56,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+
+var spriteSheet8 = new createjs.SpriteSheet({
+												images: [B_6],
+												frames: [[0,0,112,249,0],[0,446,112,233,0],[0,249,112,197,0],[0,679,112,155,0],[0,834,112,82,0],[0,916,112,82,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [6],
+															}
+
+
+												});
+
+var spriteSheet9 = new createjs.SpriteSheet({
+												images: [B_7],
+												frames: [[0,0,100,321,0],[0,321,100,212,0],[0,533,100,154,0],[0,687,100,111,0],[0,798,100,75,0],[0,873,100,44,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+
+var spriteSheet10 = new createjs.SpriteSheet({
+												images: [B_8],
+												frames: [[0,0,100,213,0],[0,213,100,183,0],[0,396,100,155,0],[0,551,100,114,0],[0,665,100,84,0],[0,749,100,37,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+
+var spriteSheet11 = new createjs.SpriteSheet({
+												images: [B_9],
+												frames: [[0,0,73,284,0],[0,284,73,213,0],[0,497,73,177,0],[0,674,73,140,0],[0,814,73,111,0],[0,925,73,72,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5],
+																break7: [6]}
+
+
+												});
+exp_bomb = new createjs.Sprite(spriteSheetB,"burn");
+	exp_spr = new createjs.Sprite(spriteSheet2,"explode");
+	robo_spr = new createjs.Sprite(spriteSheet1,"idle");
+	robo_spr2 = new createjs.Sprite(spriteSheetp2,"idle");
+ expl_spr = new createjs.Sprite(spriteSheetExp,"explode");
+	b1_spr = new createjs.Sprite(spriteSheet3,"break1");
+	b2_spr = new createjs.Sprite(spriteSheet4,"break1");
+	b3_spr = new createjs.Sprite(spriteSheet5,"break1");
+	b4_spr = new createjs.Sprite(spriteSheet6,"break1");
+	b5_spr = new createjs.Sprite(spriteSheet7,"break1");
+	b6_spr = new createjs.Sprite(spriteSheet8,"break1");
+	b7_spr = new createjs.Sprite(spriteSheet9,"break1");
+	b8_spr = new createjs.Sprite(spriteSheet10,"break1");
+	b9_spr = new createjs.Sprite(spriteSheet11,"break1");
+	robo_spr.x=Math.floor((Math.random() * 150) + 1);
+	robo_spr2.x=1450-Math.floor((Math.random() * 150) + 1);
+	b1_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b1_spr.y=243;
+	b2_spr.y=320;
+    b3_spr.y=570;
+    b4_spr.y=456;
+    b5_spr.y=580;
+    b6_spr.y=553;
+	b7_spr.y=480;
+	b8_spr.y=588;
+	b9_spr.y=516;
+  b2_spr.x=Math.floor((Math.random() * 1200) + 100);
+b3_spr.x=Math.floor((Math.random() * 1200) + 100);
+b4_spr.x=Math.floor((Math.random() * 1200) + 100);
+b5_spr.x=Math.floor((Math.random() * 1200) + 100);
+b6_spr.x=Math.floor((Math.random() * 1200) + 100);
+b7_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b9_spr.x=Math.floor((Math.random() * 1000) + 1);
+   b8_spr.x=Math.floor((Math.random() * 1000) + 1);
+   while( (b2_spr.x > b1_spr.x-172 && b2_spr.x < b1_spr.x+155)
+    || ((b3_spr.x > b1_spr.x-117 && b3_spr.x < b1_spr.x + 155)
+    || (b3_spr.x > b2_spr.x-117 && b3_spr.x < b2_spr.x + 172))
+    ||( b4_spr.x > b1_spr.x-165 && b4_spr.x < b1_spr.x + 155
+    || ((b4_spr.x > b2_spr.x-165 && b4_spr.x < b2_spr.x + 172)
+    || (b4_spr.x > b3_spr.x-165 && b4_spr.x < b3_spr.x + 117)) )
+    ||( b5_spr.x > b1_spr.x-112 && b5_spr.x < b1_spr.x + 155
+    || ((b5_spr.x > b2_spr.x-112 && b5_spr.x < b2_spr.x + 172)
+    || (b5_spr.x > b3_spr.x-112 && b5_spr.x < b3_spr.x + 117)
+    ||(b5_spr.x > b4_spr.x-112 && b5_spr.x < b4_spr.x + 165)))
+    ||( b6_spr.x > b1_spr.x-112 && b6_spr.x < b1_spr.x + 155
+    || (b6_spr.x > b2_spr.x-112 && b6_spr.x < b2_spr.x + 172)
+    || (b6_spr.x > b3_spr.x-112 && b6_spr.x < b3_spr.x + 117)
+    ||(b6_spr.x > b4_spr.x-112 && b6_spr.x < b4_spr.x + 165)
+    ||(b6_spr.x > b5_spr.x-112 && b6_spr.x < b5_spr.x + 112) )
+	||(  b7_spr.x > b1_spr.x-100 && b7_spr.x < b1_spr.x + 155
+    || (b7_spr.x > b2_spr.x-100 && b7_spr.x < b2_spr.x + 172)
+    || (b7_spr.x > b3_spr.x-100 && b7_spr.x < b3_spr.x + 117)
+    ||(b7_spr.x > b4_spr.x-100 && b7_spr.x < b4_spr.x + 165)
+    ||(b7_spr.x > b5_spr.x-100 && b7_spr.x < b5_spr.x + 112)
+    ||(b7_spr.x > b6_spr.x-100 && b7_spr.x < b6_spr.x + 112))
+    ||(  b8_spr.x > b1_spr.x-100 && b8_spr.x < b1_spr.x + 155
+    || (b8_spr.x > b2_spr.x-100 && b8_spr.x < b2_spr.x + 172)
+    || (b8_spr.x > b3_spr.x-100 && b8_spr.x < b3_spr.x + 117)
+    ||(b8_spr.x > b4_spr.x-100 && b8_spr.x < b4_spr.x + 165)
+    ||(b8_spr.x > b5_spr.x-100 && b8_spr.x < b5_spr.x + 112)
+    ||(b8_spr.x > b6_spr.x-100 && b8_spr.x < b6_spr.x + 112)
+    ||(b8_spr.x > b7_spr.x-100 && b8_spr.x < b7_spr.x + 100))
+    ||(  b9_spr.x > b1_spr.x-73 && b9_spr.x < b1_spr.x + 155
+    || (b9_spr.x > b2_spr.x-73 && b9_spr.x < b2_spr.x + 172)
+    || (b9_spr.x > b3_spr.x-73 && b9_spr.x < b3_spr.x + 117)
+    ||(b9_spr.x > b4_spr.x-73 && b9_spr.x < b4_spr.x + 165)
+    ||(b9_spr.x > b5_spr.x-73 && b9_spr.x < b5_spr.x + 112)
+    ||(b9_spr.x > b6_spr.x-73 && b9_spr.x < b6_spr.x + 112)
+    ||(b9_spr.x > b7_spr.x-73 && b9_spr.x < b7_spr.x + 100)
+    ||(b9_spr.x > b8_spr.x-73 && b9_spr.x < b8_spr.x +100)))
+	{
+    b2_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b3_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b4_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b5_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b6_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b7_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b8_spr.x=Math.floor((Math.random() * 1200) + 100);
+	b9_spr.x=Math.floor((Math.random() * 1200) + 100);
+	}
+	if((b1_spr.x<robo_spr.x+90)&&(robo_spr.x<b1_spr.x+155))
+	{r1b[0]=true;
+	robo_spr.x=b1_spr.x+70;
+	robo_spr.y=b1_spr.y+80;}
+	else if((b2_spr.x<robo_spr.x+90)&&(robo_spr.x<b2_spr.x+175))
+	{r1b[1]=true;
+	robo_spr.x=b2_spr.x+45;
+	robo_spr.y=b2_spr.y-14;}
+	else if((b3_spr.x<robo_spr.x+90)&&(robo_spr.x<b3_spr.x+117))
+	{r1b[2]=true;robo_spr.x=b3_spr.x;
+	robo_spr.y=b3_spr.y-70;}
+	else if((b4_spr.x<robo_spr.x+90)&&(robo_spr.x<b4_spr.x+165))
+	{r1b[3]=true;robo_spr.x =b4_spr.x+29;
+	robo_spr.y=b4_spr.y-70;}
+	else if((b5_spr.x<robo_spr.x+50)&&(robo_spr.x<b5_spr.x+112))
+	{r1b[4]=true;
+	robo_spr.y=b5_spr.y-78;}
+	else if((b6_spr.x<robo_spr.x+90)&&(robo_spr.x<b6_spr.x+112))
+	{r1b[5]=true;
+	robo_spr.x=b6_spr.x;
+	robo_spr.y=b6_spr.y-78;}
+	else if((b7_spr.x<robo_spr.x+90)&&(robo_spr.x<b7_spr.x+100))
+	{r1b[6]=true;robo_spr.x=b7_spr.x+14;
+	robo_spr.y=b7_spr.y;}
+	else if((b8_spr.x<robo_spr.x+90)&&(robo_spr.x<b8_spr.x+100))
+	{r1b[7]=true;robo_spr.x=b8_spr.x+2;
+	robo_spr.y=b8_spr.y-70;}
+	else if((b9_spr.x<robo_spr.x+50)&&(robo_spr.x<b9_spr.x+73))
+	{r1b[8]=true;robo_spr.x=x+10;
+	robo_spr.y=b9_spr.y-40;}
+	else
+	{robo_spr.y=718;}
+	if((b1_spr.x<robo_spr2.x)&&(robo_spr2.x<b1_spr.x+155))
+	{r2b[0]=true;robo_spr2.x=b1_spr.x+10;
+	robo_spr2.y=b1_spr.y+80;}
+	else if((b2_spr.x<robo_spr2.x)&&(robo_spr2.x<b2_spr.x+180))
+	{r2b[1]=true;robo_spr2.x=b2_spr.x;
+	robo_spr2.y=b2_spr.y-14;}
+	else if((b3_spr.x<robo_spr2.x)&&(robo_spr2.x<b3_spr.x+117))
+	{r2b[2]=true;robo_spr2.x=b3_spr.x+10;
+	robo_spr2.y=b3_spr.y-70;}
+	else if((b4_spr.x<robo_spr2.x)&&(robo_spr2.x<b4_spr.x+165))
+	{r2b[3]=true;robo_spr2.x =b4_spr.x+29;
+	robo_spr2.y=b4_spr.y-70;}
+	else if((b5_spr.x<robo_spr2.x+7)&&(robo_spr2.x<b5_spr.x+112))
+	{r2b[4]=true;robo_spr2.x=b5_spr.x+10;
+	robo_spr2.y=b5_spr.y-78;}
+	else if((b6_spr.x<robo_spr2.x)&&(robo_spr2.x<b6_spr.x+142))
+	{r2b[5]=true;robo_spr2.x=b6_spr.x;
+	robo_spr2.y=b6_spr.y-78;}
+	else if((b7_spr.x<robo_spr2.x)&&(robo_spr2.x<b7_spr.x+120))
+	{r2b[6]=true;robo_spr2.x=b7_spr.x;
+	robo_spr2.y=b7_spr.y;}
+	else if((b8_spr.x<robo_spr2.x)&&(robo_spr2.x<b8_spr.x+100))
+	{r2b[7]=true;robo_spr2.x=b8_spr.x+2;
+	robo_spr2.y=b8_spr.y-70;}
+	else if((b9_spr.x<robo_spr2.x-10)&&(robo_spr2.x<b9_spr.x+73))
+	{r2b[8]=true;robo_spr2.y=b9_spr.y;}
+	else
+	{robo_spr2.y=718;}
+	console.log(robo_spr.x,robo_spr.y,robo_spr2.x,robo_spr2.y);
+	stage.addChild(b7_spr,b1_spr,bitmapfire,bitmapBnuke,bitmapBacid,bitmapAngle,bitmapJump,bitmapPower,bitmapback,bitmapforward,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b8_spr,b9_spr,robo_spr,robo_spr2);
+	 healthb1 = new createjs.Shape();
+healthb1.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ healthb2 = new createjs.Shape();
+healthb2.graphics.beginFill("red").drawRect(1560,30,-health2*4,30);
+ armourb1 = new createjs.Shape();
+armourb1.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+ armourb2 = new createjs.Shape();
+armourb2.graphics.beginFill("gold").drawRect(1560,60,-armour2*4,30);
+stage.addChild(healthb1,healthb2,armourb1,armourb2);
+ht1 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht1.x = 20;
+		ht1.y = 33;
+ar1 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar1.x = 20;
+		ar1.y = 65;
+ht2 = new createjs.Text("Health-> "+health2.toString(), "25px Jokerman", "white");
+		ht2.x = 1390;
+		ht2.y = 33;
+ar2 = new createjs.Text("Armour-> "+armour2.toString(), "22px Comic Sans MS","skyblue");
+		ar2.x = 1420;
+		ar2.y = 65;
+		stage.addChild(ht1,ar1,ht2,ar2);
+	//,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b7_spr,b8_spr,b9_spr);
+	//stage.addChild(b1_spr,robo_spr);
+var intersection = ndgmr.checkRectCollision(robo_spr,b1_spr);
+createjs.Ticker.addEventListener("tick", stage);
+	//createjs.Ticker.addEventListener("tick", tick);
+	//document.onkeydown = keydownPressed.bind(this);
+	//document.onkeyup = keyupPressed.bind(this);
+}
+var doo=0;
+var num1=1;
+var num2=1;
+var num3=1;
+var num4=1;
+var num5=1;
+var num6=1;
+var num7=1;
+var num8=1;
+var num9=1;
+var matphato0=0;
+var matphato1=0;
+var matphato2=0;
+var matphato3=0;
+var matphato4=0;
+var matphato5=0;
+var matphato6=0;
+var matphato7=0;
+var matphato8=0;
+function tick()
+{	if(health1<=0)
+{exp_spr.x=robo_spr.x;
+exp_spr.y=robo_spr.y;
+stage.addChild(exp_spr);
+exp_spr.gotoAndPlay("explode");
+robo_spr.gotoAndPlay("dead").onload=window.alert("Game Over! Player 2 wins");
+}
+else if(health2<=0)
+{exp_spr.x=robo_spr2.x;
+exp_spr.y=robo_spr2.y;
+stage.addChild(exp_spr);
+exp_spr.gotoAndPlay("explode");
+robo_spr2.gotoAndPlay("dead").onload=window.alert("Game Over! Player 1 wins");
+}
+vel=document.getElementById("power").value;
+	ang=document.getElementById("angle").value;
+//robo_spr2.gotoAndPlay("idle");
+rect1.alpha=0.4;
+var tampx=robo_spr.x;
+var tampy=robo_spr.y;
+var intersection = ndgmr.checkRectCollision(robo_spr,b1_spr);
+var intersection1 = ndgmr.checkRectCollision(robo_spr2,b1_spr);
+var procolb1 = ndgmr.checkRectCollision(exp_bomb,b1_spr);
+var procolb2 = ndgmr.checkRectCollision(exp_bomb,b2_spr);
+var procolb3 = ndgmr.checkRectCollision(exp_bomb,b3_spr);
+var procolb4 = ndgmr.checkRectCollision(exp_bomb,b4_spr);
+var procolb5 = ndgmr.checkRectCollision(exp_bomb,b5_spr);
+var procolb6 = ndgmr.checkRectCollision(exp_bomb,b6_spr);
+var procolb7 = ndgmr.checkRectCollision(exp_bomb,b7_spr);
+var procolb8 = ndgmr.checkRectCollision(exp_bomb,b8_spr);
+var procolb9 = ndgmr.checkRectCollision(exp_bomb,b9_spr);
+var dam1=ndgmr.checkRectCollision(exp_bomb,robo_spr);
+var dam2=ndgmr.checkRectCollision(exp_bomb,robo_spr2);
+var acrolb1 = ndgmr.checkRectCollision(bitmapacid,b1_spr);
+var acrolb2 = ndgmr.checkRectCollision(bitmapacid,b2_spr);
+var acrolb3 = ndgmr.checkRectCollision(bitmapacid,b3_spr);
+var acrolb4 = ndgmr.checkRectCollision(bitmapacid,b4_spr);
+var acrolb5 = ndgmr.checkRectCollision(bitmapacid,b5_spr);
+var acrolb6 = ndgmr.checkRectCollision(bitmapacid,b6_spr);
+var acrolb7 = ndgmr.checkRectCollision(bitmapacid,b7_spr);
+var acrolb8 = ndgmr.checkRectCollision(bitmapacid,b8_spr);
+var acrolb9 = ndgmr.checkRectCollision(bitmapacid,b9_spr);
+var ram1=ndgmr.checkRectCollision(bitmapacid,robo_spr);
+var ram2=ndgmr.checkRectCollision(bitmapacid,robo_spr2);
+var nucrolb1 = ndgmr.checkRectCollision(bitmapnuke,b1_spr);
+var nucrolb2 = ndgmr.checkRectCollision(bitmapnuke,b2_spr);
+var nucrolb3 = ndgmr.checkRectCollision(bitmapnuke,b3_spr);
+var nucrolb4 = ndgmr.checkRectCollision(bitmapnuke,b4_spr);
+var nucrolb5 = ndgmr.checkRectCollision(bitmapnuke,b5_spr);
+var nucrolb6 = ndgmr.checkRectCollision(bitmapnuke,b6_spr);
+var nucrolb7 = ndgmr.checkRectCollision(bitmapnuke,b7_spr);
+var nucrolb8 = ndgmr.checkRectCollision(bitmapnuke,b8_spr);
+var nucrolb9 = ndgmr.checkRectCollision(bitmapnuke,b9_spr);
+var nam1=ndgmr.checkRectCollision(bitmapnuke,robo_spr);
+var nam2=ndgmr.checkRectCollision(bitmapnuke,robo_spr2);
+if (intersection1)
+{collide2=1;}
+if ((procolb1||acrolb1||nucrolb1)&&matphato0!=1)
+{
+//bombtj.setPaused(true);
+if(num1!=1&&num1<8)
+        {expl_spr.x=b1_spr.x+5;
+        expl_spr.y=b1_spr.y+50;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+    if(num1==2)
+         { b1_spr.y +=194;
+		 if(r1b[0]==true)
+		 robo_spr.y +=194;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=194;
+		 }
+    else if(num1==3)
+          {b1_spr.y +=119;
+		  if(r1b[0]==true)
+		 robo_spr.y +=119;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=119;}
+    else if(num1==4)
+          {b1_spr.y +=69;
+		  if(r1b[0]==true)
+		 robo_spr.y +=69;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=69;}
+    else if(num1==5)
+          {b1_spr.y +=53;
+		  if(r1b[0]==true)
+		 robo_spr.y +=53;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=53;}
+    else if(num1==6)
+          {b1_spr.y +=59;
+		  if(r1b[0]==true)
+		 robo_spr.y +=59;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=59;}
+	else if(num1==7)
+          {b1_spr.y +=64;
+		  if(r1b[0]==true)
+		 robo_spr.y +=64;
+		 else if(r2b[0]==true)
+		 robo_spr2.y +=64;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b1_spr.gotoAndStop("break"+num1.toString());
+		num1++;
+		phato=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+	rect1.alpha = 1;
+
+}
+else if((procolb2||acrolb2||nucrolb2)&&matphato1!=1)
+{
+
+if(num2!=1&&num2<8)
+        {expl_spr.x=b2_spr.x+5;
+        expl_spr.y=b2_spr.y-20;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+     if(num2==2)
+          {b2_spr.y +=132;
+		  if(r1b[1]==true)
+		 robo_spr.y +=82;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=82;}
+     else if(num2==3)
+          {b2_spr.y +=71;
+		  if(r1b[1]==true)
+		 robo_spr.y +=61;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=61;}
+     else if(num2==4)
+          {b2_spr.y +=81;
+		  if(r1b[1]==true)
+		 robo_spr.y +=71;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=71;}
+     else if(num2==5)
+          {b2_spr.y +=80;
+		  if(r1b[1]==true)
+		 robo_spr.y +=70;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=70;}
+     else if(num2==6)
+          {b2_spr.y +=55;
+		  if(r1b[1]==true)
+		 robo_spr.y +=45;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=45;}
+	else if(num1==7)
+          {b1_spr.y +=61;
+		  if(r1b[1]==true)
+		 robo_spr.y +=51;
+		 else if(r2b[1]==true)
+		 robo_spr2.y +=51;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b2_spr.gotoAndStop("break"+num2.toString());
+        num2++;
+		phato=1;
+		matphato0=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+		rect1.alpha = 1;
+
+
+}
+
+else if((procolb3||acrolb3||nucrolb3)&&matphato2!=1){
+if(num3!=1&&num3<8)
+        {expl_spr.x=b3_spr.x+5;
+        expl_spr.y=b3_spr.y-25;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+          if(num3==2)
+          {b3_spr.y +=26;
+		  if(r1b[2]==true)
+		 robo_spr.y +=3;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=3;}
+          else if(num3==3)
+          {b3_spr.y +=41;
+		  if(r1b[2]==true)
+		 robo_spr.y +=19;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=19;}
+          else if(num3==4)
+          {b3_spr.y +=33;
+		  if(r1b[2]==true)
+		 robo_spr.y +=5;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=5;}
+          else if(num3==5)
+          {b3_spr.y +=33;
+		  if(r1b[2]==true)
+		 robo_spr.y +=5;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=5;}
+          else if(num3==6)
+          {b3_spr.y +=40;
+		  if(r1b[2]==true)
+		 robo_spr.y +=35;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=35;}
+		  else if(num3==7)
+          {b3_spr.y +=58;
+		  if(r1b[2]==true)
+		 robo_spr.y +=79;
+		 else if(r2b[2]==true)
+		 robo_spr2.y +=79;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b3_spr.gotoAndStop("break"+num3.toString());
+        num3++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+	rect1.alpha = 1;
+}
+
+else if((procolb4||acrolb4||nucrolb4)&&matphato3!=1){
+if(num4!=1&&num4<8)
+        {expl_spr.x=b4_spr.x+5;
+        expl_spr.y=b4_spr.y-25;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+     if(num4==2)
+          {b4_spr.y +=63;
+		  if(r1b[3]==true)
+		 robo_spr.y +=63;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=63;}
+    else if(num4==3)
+          {b4_spr.y +=46;
+		  if(r1b[3]==true)
+		 robo_spr.y +=46;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=46;}
+     else if(num4==4)
+          {b4_spr.y +=29;
+		  if(r1b[3]==true)
+		 robo_spr.y +=29;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=29;}
+     else if(num4==5)
+          {b4_spr.y +=34;
+          if(r1b[3]==true)
+		 robo_spr.y +=34;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=34;}
+	else if(num4==6)
+          {b4_spr.y +=84;
+		  if(r1b[3]==true)
+		 robo_spr.y +=84;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=84;}
+	else if(num4==7)
+          {b4_spr.y +=88;
+		  if(r1b[3]==true)
+		 robo_spr.y +=88;
+		 else if(r2b[3]==true)
+		 robo_spr2.y +=88;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b4_spr.gotoAndStop("break"+num4.toString());
+        num4++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+	rect1.alpha = 1;
+}
+
+else if((procolb5||acrolb5||nucrolb5)&&matphato4!=1){
+if(num5!=1&&num5<8)
+        {expl_spr.x=b5_spr.x;
+        expl_spr.y=b5_spr.y-20;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+     if(num5==2)
+          {b5_spr.y +=31;
+		  if(r1b[4]==true)
+		 robo_spr.y +=31;
+		 else if(r2b[4]==true)
+		 robo_spr2.y +=31;}
+     else if(num5==3)
+          {b5_spr.y +=46;
+		  if(r1b[4]==true)
+		 robo_spr.y +=46;
+		else if(r2b[4]==true)
+		 robo_spr2.y +=46;}
+     else if(num5==4)
+          {b5_spr.y +=12;
+		  if(r1b[4]==true)
+		 robo_spr.y +=12;
+		 else if(r2b[4]==true)
+		 robo_spr2.y +=12;}
+    else if(num5==5)
+          {b5_spr.y +=39;
+		  if(r1b[4]==true)
+		 robo_spr.y +=39;
+		 else if(r2b[4]==true)
+		 robo_spr2.y +=39;}
+    else if(num5==6)
+          {b5_spr.y +=37;
+		  if(r1b[4]==true)
+		 robo_spr.y +=37;
+		 else if(r2b[4]==true)
+		 robo_spr2.y +=37;}
+	else if(num5==7)
+          {b5_spr.y +=56;
+		  if(r1b[4]==true)
+		 robo_spr.y +=56;
+		 else if(r2b[4]==true)
+		 robo_spr2.y +=56;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b5_spr.gotoAndStop("break"+num5.toString());
+        num5++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+	rect1.alpha = 1;
+}
+
+
+else if((procolb6||acrolb6||nucrolb6)&&matphato5!=1){
+if(num6!=1&&num6<8)
+        {expl_spr.x=b6_spr.x;
+        expl_spr.y=b6_spr.y-15;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+     if(num6==2)
+          {b6_spr.y +=16;
+		  if(r1b[5]==true)
+		 robo_spr.y +=16;
+		else if(r2b[5]==true)
+		 robo_spr2.y +=16;}
+     else if(num6==3)
+          {b6_spr.y +=36;
+		  if(r1b[5]==true)
+		 robo_spr.y +=16;
+		 else if(r2b[5]==true)
+		 robo_spr2.y +=16;}
+     else if(num6==4)
+          {b6_spr.y +=42;
+		  if(r1b[5]==true)
+		 robo_spr.y +=42;
+		 else if(r2b[5]==true)
+		 robo_spr2.y +=42;}
+    else if(num6==5)
+          {b6_spr.y +=73;
+		  if(r1b[5]==true)
+		 robo_spr.y +=73;
+		 else if(r2b[5]==true)
+		 robo_spr2.y +=73;}
+    else if(num6==6)
+          {b6_spr.y +=82;
+		  if(r1b[5]==true)
+		 robo_spr.y +=82;
+		 else if(r2b[5]==true)
+		 robo_spr2.y +=82;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b6_spr.gotoAndStop("break"+num6.toString());
+        num6++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato6=1;
+		matphato7=1;
+		matphato8=1;
+	rect1.alpha = 1;
+}
+
+else if((procolb7||acrolb7||nucrolb7)&&matphato6!=1){
+if(num7!=1&&num7<8)
+        {expl_spr.x=b7_spr.x;
+        expl_spr.y=b7_spr.y-20;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+    if(num7==2)
+          {b7_spr.y +=109;
+		 if(r1b[6]==true)
+		 robo_spr.y +=100;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=100;}
+    else if(num7==3)
+          {b7_spr.y +=58;
+		  if(r1b[6]==true)
+		 robo_spr.y +=32;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=32;}
+    else if(num7==4)
+          {b7_spr.y +=43;
+		  if(r1b[6]==true)
+		 robo_spr.y +=29;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=29;}
+    else if(num7==5)
+          {b7_spr.y +=36;
+		  if(r1b[6]==true)
+		 robo_spr.y +=22;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=22;}
+    else if(num7==6)
+          {b7_spr.y +=31;
+		  if(r1b[6]==true)
+		 robo_spr.y +=17;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=17;}
+	else if(num7==7)
+          {b7_spr.y +=44;
+		  if(r1b[6]==true)
+		 robo_spr.y +=30;
+		 else if(r2b[6]==true)
+		 robo_spr2.y +=30;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b7_spr.gotoAndStop("break"+num7.toString());
+        num7++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato7=1
+		matphato8=1;
+	rect1.alpha = 1;
+}
+
+
+else if((procolb8||acrolb8||nucrolb8)&&matphato7!=1)
+{
+if(num8!=1&&num8<8)
+        {expl_spr.x=b8_spr.x-5;
+        expl_spr.y=b8_spr.y-15;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+    if(num8==2)
+          {b8_spr.y +=30;
+		  if(r1b[7]==true)
+		 robo_spr.y +=30;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=30;}
+    else if(num8==3)
+          {b8_spr.y +=28;
+		  if(r1b[7]==true)
+		 robo_spr.y +=28;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=28;}
+    else if(num8==4)
+          {b8_spr.y +=41;
+		  if(r1b[7]==true)
+		 robo_spr.y +=41;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=41;}
+    else if(num8==5)
+          {b8_spr.y +=30;
+		  if(r1b[7]==true)
+		 robo_spr.y +=30;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=30;}
+    else if(num8==6)
+          {b8_spr.y +=47;
+		  if(r1b[7]==true)
+		 robo_spr.y +=47;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=47;}
+	else if(num8==7)
+          {b8_spr.y +=37;
+		  if(r1b[7]==true)
+		 robo_spr.y +=37;
+		 else if(r2b[7]==true)
+		 robo_spr2.y +=37;}
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b8_spr.gotoAndStop("break"+num8.toString());
+        num8++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato8=1;
+	rect1.alpha = 1;
+
+}
+
+else if((procolb9||acrolb9||nucrolb9)&&matphato8!=1){
+if(num9!=1&&num9<8)
+        {expl_spr.x=b9_spr.x-25;
+        expl_spr.y=b9_spr.y-20;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}
+    if(num9==2)
+          {b9_spr.y +=71;
+		  if(r1b[8]==true)
+		 robo_spr.y +=71;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=71;}
+    else if(num9==3)
+          {b9_spr.y +=36;
+		  if(r1b[8]==true)
+		 robo_spr.y +=36;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=36;}
+    else if(num9==4)
+          {b9_spr.y +=37;
+		  if(r1b[8]==true)
+		 robo_spr.y +=37;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=37;}
+    else if(num9==5)
+		  {b9_spr.y +=29;
+		  if(r1b[8]==true)
+		 robo_spr.y +=29;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=29;}
+    else if(num9==6)
+		  {b9_spr.y +=39;
+		  if(r1b[8]==true)
+		 robo_spr.y +=39;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=39;}
+		  else if(num9==7)
+		  {b9_spr.y +=72;
+		  if(r1b[8]==true)
+		 robo_spr.y +=72;
+		 else if(r2b[8]==true)
+		 robo_spr2.y +=72;}  
+		  exp_bomb.gotoAndPlay("explode");
+		  stage.removeChild(exp_bomb);
+          b9_spr.gotoAndStop("break"+num9.toString());
+        num9++;
+		phato=1;
+		matphato0=1;
+		matphato1=1;
+		matphato2=1;
+		matphato3=1;
+		matphato4=1;
+		matphato5=1;
+		matphato6=1;
+		matphato7=1;
+	rect1.alpha = 1;
+}
+if(dam1&&(turn==0))
+{health1 -= (100-armour1)*8/100;
+stage.removeChild(healthb1,armourb1,ht1,ar1,exp_bomb);
+expl_spr.x=robo_spr.x;
+expl_spr.y=robo_spr.y;
+stage.addChild(expl_spr);
+expl_spr.gotoAndPlay("explode");
+healthb1 = new createjs.Shape();
+healthb1.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ armourb1 = new createjs.Shape();
+armourb1.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+stage.addChild(healthb1,armourb1);
+ht1 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht1.x = 20;
+		ht1.y = 33;
+ar1 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar1.x = 20;
+		ar1.y = 65;
+		stage.addChild(ht1,ar1);}
+if(ram1&&(turn==0))
+{armour1 -=10;
+health1 -= (100-armour1)*8/100;
+stage.removeChild(healthb1,armourb1,ht1,ar1,bitmapacid);
+bitmapgas.x=robo_spr.x;
+bitmapgas.y=robo_spr.y;
+stage.addChild(bitmapgas);
+bitmapgas.gotoAndPlay("exp");
+healthb1 = new createjs.Shape();
+healthb1.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ armourb1 = new createjs.Shape();
+armourb1.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+stage.addChild(healthb1,armourb1);
+ht1 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht1.x = 20;
+		ht1.y = 33;
+ar1 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar1.x = 20;
+		ar1.y = 65;
+		stage.addChild(ht1,ar1);
+}
+if(nam1&&(turn==0))
+{
+health1 -= (100-armour1+5)*23/100;
+stage.removeChild(healthb1,armourb1,ht1,ar1,bitmapnuke);
+bitmapNE.x=robo_spr.x;
+bitmapNE.y=robo_spr.y;
+stage.addChild(bitmapNE);
+bitmapNE.gotoAndPlay("exp");
+healthb1 = new createjs.Shape();
+healthb1.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ armourb1 = new createjs.Shape();
+armourb1.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+stage.addChild(healthb1,armourb1);
+ht1 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht1.x = 20;
+		ht1.y = 33;
+ar1 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar1.x = 20;
+		ar1.y = 65;
+		stage.addChild(ht1,ar1);
+}
+if(dam2&&(turn==1))
+{health2 -= (100-armour2)*15/100;
+stage.removeChild(healthb2,armourb2,ht2,ar2);
+expl_spr.x=robo_spr2.x;
+expl_spr.y=robo_spr2.y;
+stage.addChild(expl_spr);
+expl_spr.gotoAndPlay("explode");
+ healthb2 = new createjs.Shape();
+healthb2.graphics.beginFill("red").drawRect(1560,30,-health2*4,30);
+ armourb2 = new createjs.Shape();
+armourb2.graphics.beginFill("gold").drawRect(1560,60,-armour2*4,30);
+stage.addChild(healthb2,armourb2);
+
+ht2 = new createjs.Text("Health-> "+health2.toString(), "25px Jokerman", "white");
+		ht2.x = 1390;
+		ht2.y = 33;
+ar2 = new createjs.Text("Armour-> "+armour2.toString(), "22px Comic Sans MS","skyblue");
+		ar2.x = 1420;
+		ar2.y = 65;
+		stage.addChild(ht2,ar2);
+}
+if(ram2&&(turn==1))
+{armour2 -=10;
+health2 -= (100-armour1)*8/100;
+stage.removeChild(healthb2,armourb2,ht2,ar2,bitmapacid);
+bitmapgas.x=robo_spr2.x;
+bitmapgas.y=robo_spr2.y;
+stage.addChild(bitmapgas);
+bitmapgas.gotoAndPlay("exp");
+healthb2 = new createjs.Shape();
+healthb2.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ armourb2 = new createjs.Shape();
+armourb2.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+stage.addChild(healthb2,armourb2);
+ht2 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht1.x = 20;
+		ht1.y = 33;
+ar2 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar1.x = 20;
+		ar1.y = 65;
+		stage.addChild(ht2,ar2);
+}
+if(nam2&&(turn==1))
+{
+health2 -= (100-armour1+5)*23/100;
+stage.removeChild(healthb2,armourb2,ht2,ar2,bitmapnuke);
+bitmapNE.x=robo_spr2.x;
+bitmapNE.y=robo_spr2.y;
+stage.addChild(bitmapNE);
+bitmapNE.gotoAndPlay("exp");
+healthb2 = new createjs.Shape();
+healthb2.graphics.beginFill("red").drawRect(20,30,health1*4,30);
+ armourb2 = new createjs.Shape();
+armourb2.graphics.beginFill("gold").drawRect(20,60,armour1*4,30);
+stage.addChild(healthb1,armourb1);
+ht2 = new createjs.Text("Health-> "+health1.toString(), "25px Jokerman", "white");
+		ht2.x = 20;
+		ht2.y = 33;
+ar2 = new createjs.Text("Armour-> "+armour1.toString(), "22px Comic Sans MS","skyblue");
+		ar2.x = 20;
+		ar2.y = 65;
+		stage.addChild(ht2,ar2);
+}
+
+			stage.update();
+}
+function clickf()
+{if(turn==0)
+{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr.x, y: robo_spr.y},2000);
+			bombtj=createjs.Tween.get(exp_bomb,{bounce: true})
+			.wait(100)
+			.call(function(){
+			exp_bomb.x=robo_spr.x+55;
+			exp_bomb.y=robo_spr.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, ((robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180))/2,robo_spr.y-50-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180),780]}}, 2200)
+			//.call(function(){while})
+			.call(function(){if(phato==0)
+			exp_bomb.gotoAndPlay("explode");
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=1;}
+else if(turn==1)
+{
+createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr2.x, y: robo_spr2.y},2000);
+			bombtj=createjs.Tween.get(exp_bomb,{bounce: true})
+			.wait(100)
+			.call(function(){
+			exp_bomb.x=robo_spr2.x-55;
+			exp_bomb.y=robo_spr2.y+20;
+			stage.addChild(exp_bomb);
+			exp_bomb.gotoAndPlay("burn");})
+			.to({guide: {path: [robo_spr2.x-55,robo_spr2.y+20, robo_spr2.x-55-vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr2.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan(ang*Math.PI/180),780]}}, 2200)//.call(function(){while})
+			.call(function(){
+			if(phato==0)
+			exp_bomb.gotoAndPlay("explode");
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=0;}
+}
+function clickfor()
+{
+			if(turn==0)
+			{if(collide1!=1)
+			{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("run"); })
+			.to({x: robo_spr.x+50, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });}
+			else
+			robo_spr.gotoAndPlay("idle");
+			turn=1;}
+			else if(turn==1)
+			{if(collide2!=1)
+			{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr2.gotoAndPlay("back"); })
+			.to({x: robo_spr2.x+50, y: robo_spr2.y}, 1000)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });}
+			else
+			robo_spr2.gotoAndPlay("idle");
+			turn=0;
+			}
+}
+function clickb()
+{
+		if(turn==0)
+			{if(collide1!=1)
+			{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("back"); })
+			.to({x: robo_spr.x-50, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });}
+			else
+			robo_spr.gotoAndPlay("idle");
+			turn=1;}
+			else if(turn==1)
+			{if(collide2!=1)
+			{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr2.gotoAndPlay("run"); })
+			.to({x: robo_spr2.x-50, y: robo_spr2.y}, 1000)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });}
+			else
+			robo_spr2.gotoAndPlay("idle");
+			turn=0;
+			}
+}
+function clickAc()
+{
+if(turn==0)
+{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr.x, y: robo_spr.y},2000);
+			createjs.Tween.get(bitmapacid,{bounce: true})
+			.wait(100)
+			.call(function(){
+			bitmapacid.x=robo_spr.x+55;
+			bitmapacid.y=robo_spr.y+20;
+			stage.addChild(bitmapacid);
+			bitmapacid.gotoAndPlay("fly");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, ((robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180))/2,robo_spr.y-50-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180),780]}}, 2200)
+			//.call(function(){while})
+			.call(function(){if(phato==0)
+			{
+			bitmapgas.x=(robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180);
+			bitmapgas.y=730;
+			stage.removeChild(bitmapacid);
+			stage.addChild(bitmapgas);
+			bitmapgas.gotoAndPlay("exp");
+			}
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=1;}
+else if(turn==1)
+{
+createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr2.x, y: robo_spr2.y},2000);
+			createjs.Tween.get(bitmapacid,{bounce: true})
+			.wait(100)
+			.call(function(){
+			bitmapacid.x=robo_spr2.x-55;
+			bitmapacid.y=robo_spr2.y+20;
+			stage.addChild(bitmapacid);
+			bitmapacid.gotoAndPlay("fly");})
+			.to({guide: {path: [robo_spr2.x-55,robo_spr2.y+20, robo_spr2.x-55-vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr2.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan(ang*Math.PI/180),780]}}, 2200).call(function(){console.log(((robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5))/2,robo_spr2.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan(ang*Math.PI/180),780)
+			if(phato==0)
+			{
+			bitmapgas.x=(robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan((ang)*Math.PI/180);
+			bitmapgas.y=730;
+			stage.removeChild(bitmapacid);
+			stage.addChild(bitmapgas);
+			bitmapgas.gotoAndPlay("exp");
+			}
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=0;}
+}
+
+function clickNu()
+{
+if(turn==0)
+{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr.x, y: robo_spr.y},2000);
+			createjs.Tween.get(bitmapnuke,{bounce: true})
+			.wait(100)
+			.call(function(){
+			bitmapnuke.x=robo_spr.x+55;
+			bitmapnuke.y=robo_spr.y+20;
+			stage.addChild(bitmapnuke);
+			bitmapnuke.gotoAndPlay("fly");})
+			.to({guide: {path: [robo_spr.x+55,robo_spr.y+20, ((robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180))/2,robo_spr.y-50-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180),780]}}, 2200)
+			//.call(function(){while})
+			.call(function(){if(phato==0)
+			{
+			bitmapNE.x=(robo_spr.x+55+vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)+(800-robo_spr.y)*Math.tan((ang)*Math.PI/180);
+			bitmapNE.y=700;
+			stage.removeChild(bitmapnuke);
+			stage.addChild(bitmapNE);
+			bitmapNE.gotoAndPlay("exp");
+			}
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=1;}
+else if(turn==1)
+{
+createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootup"); })
+			//.to({x: robo_spr2.x, y: robo_spr2.y},2000);
+			createjs.Tween.get(bitmapnuke,{bounce: true})
+			.wait(100)
+			.call(function(){
+			bitmapnuke.x=robo_spr2.x-55;
+			bitmapnuke.y=robo_spr2.y+20;
+			stage.addChild(bitmapnuke);
+			bitmapnuke.gotoAndPlay("fly_h");})
+			.to({guide: {path: [robo_spr2.x-55,robo_spr2.y+20, robo_spr2.x-55-vel*vel*Math.sin(2*ang*Math.PI/180)/(2*4.5),robo_spr2.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan(ang*Math.PI/180),780]}}, 2200).call(function(){console.log(((robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5))/2,robo_spr2.y+20-vel*vel*Math.sin(ang*Math.PI/180)*Math.sin(ang*Math.PI/180)/(2*4.5), (robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan(ang*Math.PI/180),780)
+			if(phato==0)
+			{
+			bitmapNE.x=(robo_spr2.x-55-vel*vel* Math.sin(2*ang*Math.PI/180)/4.5)-(800-robo_spr2.y)*Math.tan((ang)*Math.PI/180);
+			bitmapNE.y=720;
+			stage.removeChild(bitmapnuke);
+			stage.addChild(bitmapNE);
+			bitmapNE.gotoAndPlay("exp");
+			}
+			else
+			phato=0;});
+			createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("shootdown"); })
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+			matphato0=0;
+			matphato1=0;
+			matphato2=0;
+			matphato3=0;
+			matphato4=0;
+			matphato5=0;
+			matphato6=0;
+			matphato7=0;
+			matphato8=0;
+			turn=0;}
+}
+function clickj()
+{if(turn==0)
+	{createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr.x, y: robo_spr.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+			turn=1;
+	}
+else if(turn==1)
+	{createjs.Tween.get(robo_spr2, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr2.x, y: robo_spr2.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr2.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr2.x, y: robo_spr2.y}, 1000)
+			.call(function() { robo_spr2.gotoAndPlay("idle"); });
+			turn=0;
+	}
+			}
+    </script>
+  
+</html>

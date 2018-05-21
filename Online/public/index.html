@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+ 
+<html>
+ <head>
+ <title>mayank</title>
+ <link rel="stylesheet" type="text/css" href="style2.css">
+    <script src="socket.io.js"></script>
+     <link rel="stylesheet" type="text/css" href="style3.css"/>
+ </head>
+ <body style="background:url('bkgrnd.jpg');">
+
+ <div id="login" class=" main">
+  <h1>Login Form</h1>
+ 	<input type="Email" placeholder="Email" id="emailid"/>
+ 	<input type="Password" placeholder="Password" id="pass"/>
+ 	<button onclick="login()">Login</button>
+ </div>
+
+
+  <div id="Reg" class=" regester">
+ <h1>regester</h1>
+ <a href="signup.html"><button>Register</button></a>
+ 	
+ </div>
+   
+   
+
+    </head>
+
+    <body style="background:bkgrnd.jpg" >
+
+        <div id="mayank-chat">
+  <center>  <h4 >ChatBox</h4></center>
+  <hr/>
+            <div id="chat-window"">
+
+                <div id="output"></div>
+
+                <div id="feedback"></div>
+
+            </div>
+  <hr/>
+            <input id="handle" type="text" placeholder="Handle"/>
+
+            <input id="message" type="message" placeholder="Message"/>
+
+            <button id="send">Send</button>
+
+        </div>
+
+  <button id="chat">Chat</button>
+  <button id="chatoff">Chatoff</button>
+
+
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyATa6EO1PVnFD5lt0F7JejqcHQx59qSyE8",
+    authDomain: "my-game-dcf3d.firebaseapp.com",
+    databaseURL: "https://my-game-dcf3d.firebaseio.com",
+    projectId: "my-game-dcf3d",
+    storageBucket: "",
+    messagingSenderId: "845490545439"
+  };
+  firebase.initializeApp(config);
+</script>
+  <!--  <script src="/chat.js"></script> -->
+<script src="log.js"></script>
+
+        <script src="chat.js"></script>
+      
+ </body>
+</html>

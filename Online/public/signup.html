@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+ 
+<html>
+ <head>
+ <title>mayank</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
+ </head>
+ <body style="background:url('bkgrnd.jpg');">
+
+ <div id="Reg" class=" regester">
+ <h1>register</h1>
+ 
+ 	<input type="Email" placeholder="Email" id="emailidReg"/>
+ 	<input type="Password" placeholder="Password" id="passReg"/>
+ 	<button onclick="regester()">Sign Up</button>
+ </div>
+   <div id="logged"class=" loggedin">
+ <h1>Login Form</h1>
+ 	</div>
+
+ 
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyATa6EO1PVnFD5lt0F7JejqcHQx59qSyE8",
+    authDomain: "my-game-dcf3d.firebaseapp.com",
+    databaseURL: "https://my-game-dcf3d.firebaseio.com",
+    projectId: "my-game-dcf3d",
+    storageBucket: "",
+    messagingSenderId: "845490545439"
+  };
+  firebase.initializeApp(config);
+</script>
+ 
+<script src="log.js"></script>
+ </body>
+</html>

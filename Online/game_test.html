@@ -1,0 +1,602 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+   <script src="lib/easel.js"></script>
+   <script src="lib/ndgmr.Collision.js"></script>
+   <script src="lib/soundjs.js"></script>
+   <script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+   <script src="_assets/js/examples.js"></script>
+   <link rel="stylesheet" type="text/css" href="style.css">
+  
+   <script type="text/javascript" src="lib/tweenjs-NEXT.js"></script>
+   
+  </head>
+  <script>
+  	var xPoints=[],yPoints=[];
+ 	var stage;
+	var Robo;
+	var KEYCODE_W = 87,
+		KEYCODE_A = 65,
+		KEYCODE_S = 83,
+		KEYCODE_SPACE = 32,
+    KEYCODE_F = 70,
+		KEYCODE_D = 68;
+	var button ;
+    function init() {
+
+
+	 stage = new createjs.Stage("canvas");
+
+		//stage.enableMouseOver(10);
+	Robo= new Image();
+	Robo.src = "Game/Robot/Robo.png";
+	Robo.onload=poop;
+	exp = new Image();
+	exp.src = "Game/Robot/exp2_0.png"
+	B_1= new Image();
+	B_1.src = "Game/Buildings/1st_B.png"
+		B_2= new Image();
+	B_2.src = "Game/Buildings/2nd.png"
+	B_3= new Image();
+	B_3.src = "Game/Buildings/3rd.png"
+	B_4= new Image();
+	B_4.src = "Game/Buildings/4th.png"
+	B_5= new Image();
+	B_5.src = "Game/Buildings/5th.png"
+	B_6= new Image();
+	B_6.src = "Game/Buildings/6th.png"
+	B_7= new Image();
+	B_7.src = "Game/Buildings/7th.png"
+	B_8= new Image();
+	B_8.src = "Game/Buildings/8th.png"
+	B_9= new Image();
+	B_9.src = "Game/Buildings/9th.png"
+	B_10= new Image();
+	B_10.src = "Game/Buildings/10.png"
+	fire= new Image();
+	fire.src = "Game/Buttons/fire.png"
+	power= new Image();
+	power.src = "Game/Buttons/power.png"
+		angle= new Image();
+	angle.src = "Game/Buttons/angle.png"
+		jump= new Image();
+	jump.src = "Game/Buttons/jump.png"
+		forward= new Image();
+	forward.src = "Game/Buttons/forward.png"
+		back= new Image();
+	back.src = "Game/Buttons/back.png"
+	// B_10= new Image();
+	// B_10.src = "Game/Buildings/10.png"	
+
+  expl= new Image();
+  expl.src = "Game/Buildings/b_exp.png";
+
+  
+  button = createButton('p');
+  button.position(600,500);
+
+
+	}
+
+function poop(event)
+{
+ var rect = new createjs.Shape();
+rect.graphics.beginFill("DiamondBlack").drawRect(0,0,canvas.width,canvas.height);
+	stage.addChild(rect);
+	
+ var strip = new createjs.Shape();
+strip.graphics.beginFill("grey").drawRect(0,canvas.height-100,canvas.width,300);
+	stage.addChild(strip);
+	
+	var fireSprite = new createjs.SpriteSheet({
+													   images: [fire],
+													   frames: {width: 200, height: 100},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapcreate = new createjs.Sprite(fireSprite,"idle");
+	bitmapcreate.x=500;
+	bitmapcreate.y=800;
+	var anime3 = new createjs.ButtonHelper(bitmapcreate,"idle","hover","pressed");
+	bitmapcreate.addEventListener("mouseover",click);
+	bitmapcreate.addEventListener("click",click2);
+
+	var powerSprite = new createjs.SpriteSheet({
+													   images: [power],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapPower = new createjs.Sprite(powerSprite,"idle");
+	bitmapPower.x=220;
+	bitmapPower.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapPower,"idle","hover","pressed");
+	bitmapPower.addEventListener("mouseover",click);
+	bitmapPower.addEventListener("click",click2);
+
+	var AngleSprite = new createjs.SpriteSheet({
+													   images: [angle],
+													   frames: {width: 200, height: 89},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapAngle = new createjs.Sprite(AngleSprite,"idle");
+	bitmapAngle.x=0;
+	bitmapAngle.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapAngle,"idle","hover","pressed");
+	bitmapAngle.addEventListener("mouseover",click);
+	bitmapAngle.addEventListener("click",click2);
+
+
+	var JumpSprite = new createjs.SpriteSheet({
+													   images: [jump],
+													   frames: {width: 154, height: 89},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapJump = new createjs.Sprite(JumpSprite,"idle");
+	bitmapJump.x=750;
+	bitmapJump.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapJump,"idle","hover","pressed");
+	bitmapJump.addEventListener("mouseover",click);
+	bitmapJump.addEventListener("click",click2);
+
+	var ForwardSprite = new createjs.SpriteSheet({
+													   images: [forward],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapforward = new createjs.Sprite(ForwardSprite,"idle");
+	bitmapforward.x=1050;
+	bitmapforward.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapforward,"idle","hover","pressed");
+	bitmapforward.addEventListener("mouseover",click);
+	bitmapforward.addEventListener("click",click2);
+
+
+	var BackSprite = new createjs.SpriteSheet({
+													   images: [back],
+													   frames: {width: 73, height: 89},
+													   animations: { idle: 0, hover: 1, pressed: 1 }
+												   });
+	var bitmapback = new createjs.Sprite(BackSprite,"idle");
+	bitmapback.x=950;
+	bitmapback.y=800;
+	var anime4 = new createjs.ButtonHelper(bitmapback,"idle","hover","pressed");
+	bitmapback.addEventListener("mouseover",click);
+	bitmapback.addEventListener("click",click2);
+	//Robot movement-------------------------------------
+	var spriteSheet1 = new createjs.SpriteSheet({
+													   images: [Robo],
+													   frames: {width: 90, height: 83},
+													   animations: { idle: [0,9,"idle",1], jump_up: [10,15,"jump_down",0.5], jump_down: [16,18,"jump_down",0.4] ,run: [21,28,"run",0.6] ,shoot: [29,35,false,0.5],
+													   back: [10,20,"back",0.7], dead:[36,43,false,0.8]}
+											});
+	var spriteSheet2 = new createjs.SpriteSheet({
+												images: [exp],
+												frames: {width: 64,height: 64,count: 16},
+												animations: {explode:[0,15,false,0.7]}
+
+
+												});
+ var spriteSheetExp = new createjs.SpriteSheet({
+                      												images: [expl],
+                      												frames: {width: 174,height: 130},
+                      												animations: {explode:[0,7,false,0.7]}
+
+
+                      												});
+	var spriteSheet3 = new createjs.SpriteSheet({
+												images: [B_1],
+												frames: [[0,0,155,558,0],[0,558,155,364,0],[0,922,155,245,0],[0,1167,155,176,0],[0,1343,155,123,0],[0,1466,155,64,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+	var spriteSheet4 = new createjs.SpriteSheet({
+												images: [B_2],
+												frames: [[0,0,78,241,0],[0,241,78,200,0],[0,441,78,149,0],[0,590,78,114,0],[0,704,78,93,0],[0,797,78,49,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+
+	var spriteSheet5 = new createjs.SpriteSheet({
+												images: [B_3],
+												frames: [[0,0,103,181,0],[0,181,103,141,0],[0,141,103,107,0],[0,107,103,100,0],[0,100,103,39,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4]
+														}
+
+
+												});
+
+
+
+	var spriteSheet6 = new createjs.SpriteSheet({
+												images: [B_4],
+												frames: [[0,0,112,221,0],[0,221,112,190,0],[0,190,112,144,0],[0,144,112,132,0],[0,132,112,93,0],[0,93,112,56,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet7 = new createjs.SpriteSheet({
+												images: [B_5],
+												frames: [[0,0,78,170,0],[0,170,78,164,0],[0,164,78,131,0],[0,131,78,89,0],[0,89,78,67,0],[0,67,78,33,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet8 = new createjs.SpriteSheet({
+												images: [B_6],
+												frames: [[0,0,53,204,0],[0,204,53,161,0],[0,161,53,154,0],[0,154,53,88,0],[0,88,53,112,0],[0,112,53,57,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet9 = new createjs.SpriteSheet({
+												images: [B_7],
+												frames: [[0,0,106,227,0],[0,227,106,227,0],[0,227,106,172,0],[0,172,106,133,0],[0,133,106,126,0],[0,126,106,75,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet10 = new createjs.SpriteSheet({
+												images: [B_8],
+												frames: [[0,0,112,249,0],[0,249,112,233,0],[0,233,112,197,0],[0,197,112,155,0],[0,155,112,122,0],[0,122,112,82,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+var spriteSheet11 = new createjs.SpriteSheet({
+												images: [B_9],
+												frames: [[0,0,100,213,0],[0,213,100,183,0],[0,183,100,155,0],[0,155,100,114,0],[0,114,100,83,0],[0,83,100,37,0]],
+												animations: {break1:[0],
+															break2:[1],
+																break3: [2],
+																break4: [3],
+																break5: [4],
+																break6: [5]}
+
+
+												});
+
+// var fireSprite = new createjs.SpriteSheet({
+// 												images: [fire],
+// 												frames: [[0,0,240,120,0]],
+// 												animations: {break1:[0]}
+
+
+// 												});
+
+
+
+	var exp_spr = new createjs.Sprite(spriteSheet2,"explode");
+	var robo_spr = new createjs.Sprite(spriteSheet1);
+  var expl_spr = new createjs.Sprite(spriteSheetExp,"explode");
+	var b1_spr = new createjs.Sprite(spriteSheet3,"break1");
+	var b2_spr = new createjs.Sprite(spriteSheet4,"break1");
+	var b3_spr = new createjs.Sprite(spriteSheet5,"break1");
+	var b4_spr = new createjs.Sprite(spriteSheet6,"break1");
+	var b5_spr = new createjs.Sprite(spriteSheet7,"break1");
+	var b6_spr = new createjs.Sprite(spriteSheet8,"break1");
+	var b7_spr = new createjs.Sprite(spriteSheet9,"break1");
+	var b8_spr = new createjs.Sprite(spriteSheet10,"break1");
+	var b9_spr = new createjs.Sprite(spriteSheet11,"break1");
+var fire_spr = new createjs.Sprite(fireSprite,"break1");
+	robo_spr.x=Math.floor((Math.random() * 1000) + 1);
+	robo_spr.y=500;
+	b1_spr.x=500;
+	b1_spr.y=200;
+   b2_spr.y=520;
+   b3_spr.y=590;
+    b4_spr.y=550;
+      b5_spr.y=600;
+      b6_spr.y=560;
+  b2_spr.x=Math.floor((Math.random() * 1000) + 1);
+b3_spr.x=Math.floor((Math.random() * 1000) + 1);
+b4_spr.x=Math.floor((Math.random() * 1000) + 1);
+b5_spr.x=Math.floor((Math.random() * 1000) + 1);
+b6_spr.x=Math.floor((Math.random() * 1000) + 1);
+b7_spr.x=Math.floor((Math.random() * 1000) + 1);
+	b9_spr.x=Math.floor((Math.random() * 1000) + 1);
+   b8_spr.x=Math.floor((Math.random() * 1000) + 1);
+	// while(b2_spr.x > b1_spr.x-78 && b2_spr.x < b1_spr.x + 155){
+	// b2_spr.x=Math.floor((Math.random() * 1000) + 1);
+	// }
+	// b2_spr.y=520;	
+	// 	b3_spr.x=Math.floor((Math.random() * 1000) + 1);	
+	// while( 
+	// 	 ((b3_spr.x > b1_spr.x-103 && b3_spr.x < b1_spr.x + 155)
+	// 	|| (b3_spr.x > b2_spr.x-103 && b3_spr.x < b2_spr.x + 78))){
+	// //b2_spr.x=Math.floor((Math.random() * 1000) + 1);
+	// b3_spr.x=Math.floor((Math.random() * 1000) + 1);
+	// }
+ //    b3_spr.y=590;
+ //    b4_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //    while(b4_spr.x > b1_spr.x-112 && b4_spr.x < b1_spr.x + 155
+	// 	|| ((b4_spr.x > b2_spr.x-112 && b4_spr.x < b2_spr.x + 78)
+	// 	|| (b4_spr.x > b3_spr.x-112 && b4_spr.x < b3_spr.x + 103))){
+ //    	 b4_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //    }
+ //    b4_spr.y=550;
+ //    b5_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //     while(b5_spr.x > b1_spr.x-78 && b5_spr.x < b1_spr.x + 155
+	// 	|| ((b5_spr.x > b2_spr.x-78 && b5_spr.x < b2_spr.x + 78)
+	// 	|| (b5_spr.x > b3_spr.x-78 && b5_spr.x < b3_spr.x + 103)
+	// 	||(b5_spr.x > b4_spr.x-78 && b5_spr.x < b4_spr.x + 112))){
+    	 
+ //    	 b5_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //    }
+ //    b5_spr.y=600;
+ //    b6_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //    while(b6_spr.x > b1_spr.x-53 && b6_spr.x < b1_spr.x + 155
+	// 	|| (b6_spr.x > b2_spr.x-53 && b6_spr.x < b2_spr.x + 78)
+	// 	|| (b6_spr.x > b3_spr.x-53 && b6_spr.x < b3_spr.x + 103)
+ // 		||(b6_spr.x > b4_spr.x-53 && b6_spr.x < b4_spr.x + 112)
+ // 		||(b6_spr.x > b5_spr.x-53 && b6_spr.x < b5_spr.x + 78)){
+ //    	 b6_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //    }
+	// b6_spr.y=560;
+ //    b7_spr.x=Math.floor((Math.random() * 1000) + 1);
+ //     while(b7_spr.x > b1_spr.x-106 && b7_spr.x < b1_spr.x + 155
+	// 	|| (b7_spr.x > b2_spr.x-106 && b7_spr.x < b2_spr.x + 78)
+	// 	|| (b7_spr.x > b3_spr.x-106 && b7_spr.x < b3_spr.x + 103)
+ // 		||(b7_spr.x > b4_spr.x-106 && b7_spr.x < b4_spr.x + 112)
+ // 		||(b7_spr.x > b5_spr.x-106 && b7_spr.x < b5_spr.x + 78)
+ // 		||(b7_spr.x > b6_spr.x-106 && b7_spr.x < b6_spr.x + 53)){
+ //     	 b7_spr.x=Math.floor((Math.random() * 1000) + 1);
+   
+ //     }
+ while( (b2_spr.x > b1_spr.x-78 && b2_spr.x < b1_spr.x + 155)
+    || ((b3_spr.x > b1_spr.x-103 && b3_spr.x < b1_spr.x + 155)
+    || (b3_spr.x > b2_spr.x-103 && b3_spr.x < b2_spr.x + 78))
+    ||( b4_spr.x > b1_spr.x-112 && b4_spr.x < b1_spr.x + 155
+    || ((b4_spr.x > b2_spr.x-112 && b4_spr.x < b2_spr.x + 78)
+    || (b4_spr.x > b3_spr.x-112 && b4_spr.x < b3_spr.x + 103)) )
+    ||( b5_spr.x > b1_spr.x-78 && b5_spr.x < b1_spr.x + 155
+    || ((b5_spr.x > b2_spr.x-78 && b5_spr.x < b2_spr.x + 78)
+    || (b5_spr.x > b3_spr.x-78 && b5_spr.x < b3_spr.x + 103)
+    ||(b5_spr.x > b4_spr.x-78 && b5_spr.x < b4_spr.x + 112)))
+    ||(  b7_spr.x > b1_spr.x-106 && b7_spr.x < b1_spr.x + 155
+    || (b7_spr.x > b2_spr.x-106 && b7_spr.x < b2_spr.x + 78)
+    || (b7_spr.x > b3_spr.x-106 && b7_spr.x < b3_spr.x + 103)
+    ||(b7_spr.x > b4_spr.x-106 && b7_spr.x < b4_spr.x + 112)
+    ||(b7_spr.x > b5_spr.x-106 && b7_spr.x < b5_spr.x + 78)
+    ||(b7_spr.x > b6_spr.x-106 && b7_spr.x < b6_spr.x + 53))
+    ||( b6_spr.x > b1_spr.x-53 && b6_spr.x < b1_spr.x + 155
+    || (b6_spr.x > b2_spr.x-53 && b6_spr.x < b2_spr.x + 78)
+    || (b6_spr.x > b3_spr.x-53 && b6_spr.x < b3_spr.x + 103)
+    ||(b6_spr.x > b4_spr.x-53 && b6_spr.x < b4_spr.x + 112)
+    ||(b6_spr.x > b5_spr.x-53 && b6_spr.x < b5_spr.x + 78) )
+    ||(  b8_spr.x > b1_spr.x-112 && b8_spr.x < b1_spr.x + 155
+    || (b8_spr.x > b2_spr.x-112 && b8_spr.x < b2_spr.x + 78)
+    || (b8_spr.x > b3_spr.x-112 && b8_spr.x < b3_spr.x + 103)
+    ||(b8_spr.x > b4_spr.x-112 && b8_spr.x < b4_spr.x + 112)
+    ||(b8_spr.x > b5_spr.x-112 && b8_spr.x < b5_spr.x + 78)
+    ||(b8_spr.x > b6_spr.x-112 && b8_spr.x < b6_spr.x + 53)
+    ||(b8_spr.x > b7_spr.x-112 && b8_spr.x < b7_spr.x + 106))
+    ||(  b9_spr.x > b1_spr.x-100 && b9_spr.x < b1_spr.x + 155
+    || (b9_spr.x > b2_spr.x-100 && b9_spr.x < b2_spr.x + 78)
+    || (b9_spr.x > b3_spr.x-100 && b9_spr.x < b3_spr.x + 103)
+    ||(b9_spr.x > b4_spr.x-100 && b9_spr.x < b4_spr.x + 112)
+    ||(b9_spr.x > b5_spr.x-100 && b9_spr.x < b5_spr.x + 78)
+    ||(b9_spr.x > b6_spr.x-100 && b9_spr.x < b6_spr.x + 53)
+    ||(b9_spr.x > b7_spr.x-100 && b9_spr.x < b7_spr.x + 106)
+    ||(b9_spr.x > b8_spr.x-100 && b9_spr.x < b8_spr.x +112))){
+    b2_spr.x=Math.floor((Math.random() * 1000) + 1);
+b3_spr.x=Math.floor((Math.random() * 1000) + 1);
+b4_spr.x=Math.floor((Math.random() * 1000) + 1);
+b5_spr.x=Math.floor((Math.random() * 1000) + 1);
+b6_spr.x=Math.floor((Math.random() * 1000) + 1);
+b7_spr.x=Math.floor((Math.random() * 1000) + 1);
+b8_spr.x=Math.floor((Math.random() * 1000) + 1);
+    b9_spr.x=Math.floor((Math.random() * 1000) + 1);
+
+xPoints[0]=b1_spr.x;
+xPoints[1]=b2_spr.x;
+xPoints[2]=b3_spr.x;
+xPoints[3]=b4_spr.x;
+xPoints[4]=b5_spr.x;
+xPoints[5]=b6_spr.x;
+xPoints[6]=b7_spr.x;
+xPoints[7]=b8_spr.x;
+xPoints[8]=b9_spr.x;
+xPoints[9]=b10_spr.x;
+
+window.alert("Second Point:> "+xPoints[1]);
+}
+
+	b7_spr.y=550;
+ 
+	b8_spr.y=530;
+  //  b9_spr.x=Math.floor((Math.random() * 1000) + 1);
+	b9_spr.y=570;
+
+yPoints[0]=b1_spr.y;
+yPoints[1]=b2_spr.y;
+yPoints[2]=b3_spr.y;
+yPoints[3]=b4_spr.y;
+yPoints[4]=b5_spr.y;
+yPoints[5]=b6_spr.y;
+yPoints[6]=b7_spr.y;
+yPoints[7]=b8_spr.y;
+yPoints[8]=b9_spr.y;
+yPoints[9]=b10_spr.y;
+	//robo_spr.gotoAndPlay("idle");
+	//createjs.Ticker.setFPS(60);
+	stage.addChild(bitmapcreate,bitmapforward,bitmapback,bitmapJump,bitmapAngle,bitmapPower, b1_spr,robo_spr,b2_spr,b3_spr,b4_spr,b5_spr,b6_spr,b7_spr,b8_spr,b9_spr);
+var intersection = ndgmr.checkRectCollision(robo_spr,b1_spr);
+createjs.Ticker.addEventListener("tick", stage);
+	//createjs.Ticker.addEventListener("tick", tick);
+var num=1;
+	document.onkeydown = keydownPressed.bind(this);
+	//document.onkeyup = keyupPressed.bind(this);
+	function keydownPressed(event) {
+	var mn = event.keyCode;
+		switch(mn) {
+			case KEYCODE_SPACE:
+
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_up"); })
+			.to({x: robo_spr.x, y: robo_spr.y-85}, 1000)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("jump_down"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+			case KEYCODE_A:
+				createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("back"); })
+			.to({x: robo_spr.x-150, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+			case KEYCODE_S:
+				createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("shoot"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				break;
+			case KEYCODE_D:
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {robo_spr.gotoAndPlay("run"); })
+			.to({x: robo_spr.x+150, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle"); });
+				//forward();
+				//robo_spr.gotoAndPlay("idle")
+				break;
+			case KEYCODE_W:
+			createjs.Tween.get(robo_spr, { bounce: true}, true)
+			.wait(100)
+			.call(function() {
+			exp_spr.x=robo_spr.x+5;
+			exp_spr.y=robo_spr.y;
+			stage.addChild(exp_spr);
+			exp_spr.gotoAndPlay("explode");})
+			.wait(100)
+			.call(function() { robo_spr.gotoAndPlay("dead"); })
+			.to({x: robo_spr.x, y: robo_spr.y}, 1000)
+			.call(function() { robo_spr.gotoAndPlay("idle");
+    stage.removeChild(exp_spr); });
+				break;
+        case KEYCODE_F:
+
+        createjs.Tween.get(b1_spr, { bounce: true}, true)
+  			.wait(100)
+      .call(function() {  if(num!=1&&num<7)
+        {expl_spr.x=b1_spr.x+5;
+        expl_spr.y=b1_spr.y;
+        stage.addChild(expl_spr);
+        expl_spr.gotoAndPlay("explode");}})
+        .wait(300)
+  			.call(function() {
+
+          if(num==2)
+          b1_spr.y +=194;
+          else if(num==3)
+          b1_spr.y +=119;
+          else if(num==4)
+          b1_spr.y +=69;
+          else if(num==5)
+          b1_spr.y +=53;
+          else if(num==6)
+          {b1_spr.y +=59;}
+            if(num>6)
+          {num=1;
+          b1_spr.y -=494;
+          stage.removeChild(expl_spr);
+          }
+          b1_spr.gotoAndStop("break"+num.toString());
+        num++;})
+        break;
+
+		//robo_spr.gotoAndPlay("idle");
+		stage.update();
+	}
+	}
+	
+}
+function click(event)
+{
+//soundInstance2 = createjs.Sound.play(srd); 
+}
+function click2(event)
+{
+//soundInstance3 = createjs.Sound.play(srdd); 
+}
+
+
+</script>
+ <body onload="init()"> 
+    <canvas id="canvas" width="1600" height="900"></canvas>
+ 
+    <!-- Change the `data-field` of buttons and `name` of input field's for multiple plus minus buttons-->
+
+  <!-- <div class="input-group-button">
+    <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity">
+      <i class="fa fa-minus" aria-hidden="true"></i>
+     </button>-->
+ <div> 
+ 
+  
+  <input id="power" type="number" name="" value="60">
+  
+  
+
+
+ <input id = "angle" type="number" name="" value="60">
+      <input id="po" type="number" name="" value="60">
+  
+  
+
+
+ <input id = "an" type="number" name="" value="60">
+    
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+ 
+<html>
+ <head>
+ <title>mayank</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
+ </head>
+ <body style="background:url('bkgrnd.jpg');">
+
+ <div id="login" class=" main">
+  <h1>Login Form</h1>
+ 	<input type="Email" placeholder="Email" id="emailid"/>
+ 	<input type="Password" placeholder="Password" id="pass"/>
+ 	<button onclick="login()">Login</button>
+ </div>
+
+
+  <div id="Reg" class=" regester">
+ <h1>regester</h1>
+ <a href="signup.html"><button>Regester</button></a>
+ 	
+ </div>
+ 
+
+
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyATa6EO1PVnFD5lt0F7JejqcHQx59qSyE8",
+    authDomain: "my-game-dcf3d.firebaseapp.com",
+    databaseURL: "https://my-game-dcf3d.firebaseio.com",
+    projectId: "my-game-dcf3d",
+    storageBucket: "",
+    messagingSenderId: "845490545439"
+  };
+  firebase.initializeApp(config);
+</script>
+ 
+<script src="log.js"></script>
+<!-- script type="text/javascript"></script>
+ <canvas id='canvas'></canvas><br />
+<!--  <button onclick='moveLeft()'>Left</button>
+ <button onclick='moveRight()'>Right</button>
+ <button onclick='idle()'>idle</button>
+   
+ <script>
+ var canvasWidth = 2000; 
+ var canvasHeight = 600;
+ 
+ 
+ var spriteWidth = 600; 
+ var spriteHeight = 50; 
+ 
+ // var rowsRight = 1; 
+ // var colsRight = 8; 
+  var rowsLeft = 1; 
+ var colsLeft = 9; 
+ 
+ var trackRight = 0; 
+ var trackLeft = 0; 
+ var idle = 0;
+ var width = spriteWidth/colsLeft; 
+ var height = spriteHeight/rowsLeft;
+ var widthIdle = spriteWidth/8; 
+
+ var rl=0;
+
+ // var widthRight = spriteWidth/8; 
+ // var heightRight = spriteHeightRight/1; 
+ 
+ var curFrame = 0; 
+ // var frameCount = 12; 
+ 
+ var x=0;
+ var y=200; 
+ 
+ var srcX; 
+ var srcY; 
+ 
+ // var left = false; 
+ // var right = false;
+ // var jump = false;
+ 
+ var speed = 10; 
+ 
+ var canvas = document.getElementById('canvas');
+ canvas.width = canvasWidth;
+ canvas.height = canvasHeight; 
+ 
+ var ctx = canvas.getContext("2d");
+ 
+ var character = new Image(); 
+ character.src = "robot.png";
+
+  var roboRight = new Image(); 
+ roboRight.src = "roboRight.png";
+  var roboLeft = new Image(); 
+ roboLeft.src = "roboLeft.png";
+ 
+ var roboJump = new Image(); 
+ roboJump.src = "roboJump.png";
+ 
+ var robojumpleft = new Image(); 
+ robojumpleft.src = "robojumpleft.png";
+ 
+ var roboIdle = new Image(); 
+ roboIdle.src = "roboIdle.png";
+ 
+ // function updateFrame(){
+ // curFrame = ++curFrame % frameCount; 
+ // srcX = curFrame * width; 
+ // ctx.clearRect(x,y,width,height); 
+ // if(idle){
+ // 	srcY=height*0;
+ 
+ 
+ // }
+ //  if(left && x>0){
+ // srcY = trackLeft * height; 
+ // x-=speed; 
+ // }
+ // if(right && x<canvasWidth-width){
+ // srcY = trackRight * height; 
+ // x+=speed; 
+ // }
+ // }
+ function updateIdle(){
+ curFrame = ++curFrame % 8; 
+ srcX = curFrame * widthIdle; 
+ ctx.clearRect(x,y,widthIdle,height); 
+  
+ srcY = idle * height;
+   
+ }
+ function updateRight(){
+ curFrame = ++curFrame % 9 ; 
+ srcX = curFrame * width; 
+ ctx.clearRect(x,y,width,height); 
+  
+ srcY = trackRight * height; 
+  x+=speed;   
+  rl=1;
+   
+ }
+ function updateLeft(){
+ ctx.clearRect(x,y,width+8,height); 
+
+ curFrame = ++curFrame % 9 ; 
+ srcX = curFrame * width; 
+  
+ srcY = trackLeft * height; 
+  x-=speed; 
+  rl=2;  
+   
+ }
+  function updateJump(){
+ curFrame = ++curFrame % 8 ; 
+ srcX = curFrame * widthIdle; 
+ ctx.clearRect(x,y,widthIdle,height); 
+  
+ srcY = trackLeft * height;
+ if(y>130){
+ y-=speed;
+ x+=speed;
+ }
+ // else if(y<200){
+ // 	y+=speed;
+ // 	x+=speed;
+ // }  
+ }
+
+document.onkeydown = keydownFunction.bind(this);
+
+ 
+document.onkeyup = keyUpFunction.bind(this);
+
+function keyUpFunction(event){
+updateIdle();
+ctx.drawImage(roboIdle,srcX,srcY,widthIdle,height,x,y,widthIdle,height);
+
+}
+
+function keydownFunction(event) {
+
+ 
+
+            var e = event||window.event;
+
+            
+
+           switch (e.keyCode) {
+
+                         case 37: {
+                          updateLeft();
+                          ctx.drawImage(roboLeft,srcX,srcY,width,height,x,y,width,height);
+ 						}
+                          break;
+
+                       case 39: 
+                         {  updateRight();
+
+ 							ctx.drawImage(roboRight,srcX,srcY,width,height,x,y,width,height);
+ 
+                         }
+                          break;
+                          
+                		
+                		case 38: {
+                          	
+                         
+                          	 	 updateJump();
+ 							ctx.drawImage(roboJump,srcX,srcY,width,height,x,y,width,height);
+                          }
+                      }
+
+       }
+       
+ function draw(){
+ keyUpFunction();
+  keydownFunction();
+ }
+ 
+ // function idle(){
+ // left = false; 
+ // right = false; 
+ // }
+ 
+ 
+ // function moveLeft(){
+ // left = true; 
+ // right = false; 
+ // }
+ 
+ // function moveRight(){
+ // left = false;
+ // right = true; 
+ // }
+ 
+ setInterval(draw,1000);
+ 
+ </script>
+ !-->
+ </body>
+</html>
